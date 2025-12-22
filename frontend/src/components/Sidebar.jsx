@@ -11,10 +11,10 @@ import {
 
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const menuItems = [
-    { name: "Dashboard", href: "/", icon: LayoutDashboardIcon },
-    { name: "Reservations", href: "/services", icon: FolderOpenIcon },
-    { name: "Payement", href: "/payement", icon: UsersIcon },
-    { name: "Mes services offerts", href: "/", icon: UsersIcon },
+    { name: "Dashboard", href: "/provider", icon: LayoutDashboardIcon },
+    { name: "Reservations", href: "/provider/services", icon: FolderOpenIcon },
+    { name: "Payement", href: "/provider/payement", icon: UsersIcon },
+    // { name: "Mes services offerts", href: "/provider/services", icon: UsersIcon },
   ];
 
   const sidebarRef = useRef(null);
@@ -45,6 +45,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
               <NavLink
                 to={item.href}
                 key={item.name}
+                end={item.href === "/provider"} 
                 className={({ isActive }) =>
                   `flex items-center gap-3 py-2 px-4 text-gray-800 dark:text-zinc-100 cursor-pointer rounded transition-all  ${
                     isActive

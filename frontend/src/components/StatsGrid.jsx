@@ -5,9 +5,7 @@ import { demandesServicesPrestataire } from "../assets/data";
 
 
 export default function StatsGrid() {
-    const currentWorkspace = useSelector(
-        (state) => state?.workspace?.currentWorkspace || null
-    );
+
 
     const [stats, setStats] = useState({
         totalDemande: 0,
@@ -56,26 +54,15 @@ export default function StatsGrid() {
         if (demandesServicesPrestataire) {
             setStats({
                 totalDemande: demandesServicesPrestataire.length,
-                activeDemande: currentWorkspace.projects.filter(
-                    (p) => p.statut ==="PENDING"
-                ).length,
                 completedDemande: demandesServicesPrestataire
                     .filter((p) => p.statut === "COMPLETED").length,
-                myTasks: currentWorkspace.projects.reduce(
-                    (acc, project) =>
-                        acc +
-                        project.tasks.filter(
-                            (t) => t.assignee?.email === currentWorkspace.owner.email
-                        ).length,
-                    0
-                ),
                 overdueDemande: demandesServicesPrestataire.filter(
                     (p) => p.statut === "CANCELLED"
                 ).length,
                 
             });
         }
-    }, [currentWorkspace]);
+    }, [demandesServicesPrestataire]);
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 my-9">

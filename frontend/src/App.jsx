@@ -16,15 +16,13 @@ const App = () => {
     <>
       <Toaster />
       <Routes>
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home />} />
 
         {/* client Routes */}
         <Route path="/client" element={<LayoutClient />}>
           <Route index element={<DashboardClient />} />
-          
         </Route>
-
-        <Route path="/" element={<Layout />}>
+        <Route path="/provider" element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path="payement" element={<Team />} />
           <Route path="services" element={<Projects />} />
