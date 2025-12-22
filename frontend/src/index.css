@@ -1,0 +1,139 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+@import "tailwindcss";
+
+* {
+  font-family: "Outfit", sans-serif;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@layer base {
+  button {
+    cursor: pointer;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #e5e7eb;
+  }
+
+  .dark ::-webkit-scrollbar-track {
+    background-color: #1c1c1e;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #bbc3d1;
+    border-radius: 0.375rem;
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background-color: #374151;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #99a5bc;
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background-color: #4b5563;
+  }
+
+  .dark input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(100%);
+  }
+
+  input[type="checkbox"] {
+    appearance: none;
+    background-color: #d1d5db;
+    border-radius: 9999px;
+    cursor: pointer;
+    width: 1rem;
+    height: 1rem;
+    color:#0d2f55;
+    border-color:#f16F0F;
+  }
+
+  .dark input[type="checkbox"] {
+    background-color: #374151;
+  }
+
+  input[type="checkbox"]:checked {
+    background-color: #3b82f6;
+  }
+
+  /* landing page */
+  .dark body {
+    @apply bg-gray-950 text-white antialiased;
+  }
+
+  button {
+    @apply cursor-pointer;
+  }
+}
+
+
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: inline-flex;
+  animation: marquee 16s linear infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+@theme {
+  --color-primary: #8b5cf6;
+  --color-orange: #f16F0F;
+  --bg-orange: #f3f4f6;
+  --bg-blue: #e0e7ff;
+  --color-blue: #0d2f55;
+  --color-primary-hover: #7c3aed;
+  --color-secondary: #ec4899;
+  --color-dark-bg: #0f172a;
+  --color-dark-card: #1e293b;
+  --text-orange:#f16F0F;
+  --text-blue:#0d2f55;
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-white/5 backdrop-blur-lg border border-white/10 shadow-xl;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold backdrop-blur-sm border border-white/10 transition-all duration-300;
+  }
+}
+
