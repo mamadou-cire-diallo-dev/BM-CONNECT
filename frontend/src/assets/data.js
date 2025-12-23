@@ -75,11 +75,43 @@ export const demandesServicesPrestataire = [
     statut: "CANCELED",
     date: "2025-10-18T14:00:00.000Z",
 
-    client: dummyClients.find((c) => c.id === "client_1"),
+    client: dummyClients.find((c) => c.id === "client_3"),
 
     service: {
       id: "serv_1",
       titre: "Réparation de climatiseur",
+      prix: 150,
+    },
+
+    prestataireId: "prest_1",
+  },
+   {
+    id: "dem_5",
+    description: "Installation climatiseur",
+    statut: "PENDING",
+    date: "2025-10-18T14:00:00.000Z",
+
+    client: dummyClients.find((c) => c.id === "client_2"),
+
+    service: {
+      id: "serv_2",
+      titre: "Réparation de climatiseur",
+      prix: 150,
+    },
+
+    prestataireId: "prest_1",
+  },
+   {
+    id: "dem_6",
+    description: "Installation de Courant",
+    statut: "CANCELED",
+    date: "2025-10-18T14:00:00.000Z",
+
+    client: dummyClients.find((c) => c.id === "client_1"),
+
+    service: {
+      id: "serv_1",
+      titre: "Electricite de Batiment",
       prix: 150,
     },
 

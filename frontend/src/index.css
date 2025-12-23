@@ -125,8 +125,11 @@
   --color-dark-card: #1e293b;
   --text-orange:#f16F0F;
   --text-blue:#0d2f55;
-}
 
+}
+body{
+  color :#bae2ed
+}
 @layer utilities {
   .glass-panel {
     @apply bg-white/5 backdrop-blur-lg border border-white/10 shadow-xl;
