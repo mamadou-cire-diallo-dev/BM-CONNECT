@@ -1,43 +1,36 @@
-import express from 'express'
-import { prisma } from './db/prisma.js'
-import req from 'express/lib/request.js'
-import res from 'express/lib/response.js'
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
+import rateLimit from "express-rate-limit";
 
-const app = express()
-app.use(express.json())
+import { env } from "./config/env.js";
+import apiRoutes from "./routes/index.js";
+import { errorMiddleware } from "./middlewares/error.js";
 
-app.get('/health', async (req, res) => {
-  await prisma.$queryRaw`SELECT 1`
-  res.json({ ok: true })
-})
+const app = express();
 
-app.get('/users', async (req, res) => {
-  const users = await prisma.user.findMany()
-  res.json(users)
-})
+app.use(helmet());
+app.use(cors({ origin: env.CORS_ORIGIN === "*" ? true : env.CORS_ORIGIN, credentials: true }));
+app.use(express.json({ limit: "2mb" }));
+app.use(morgan("dev"));
 
-app.get('/test', async (req,res)=>{
-    const user = await prisma.user.create(
-        {
-            data: {
-                email: "cire@gmail.com",
-                nom:  "Diallo Mamadou Cire"
-            }
-        }
-    )
+app.use(
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 300,
+    standardHeaders: true,
+    legacyHeaders: false,
+  })
+);
 
-    res.json({
-        user
-    })
-})
+// API
+app.use("/api", apiRoutes);
 
-const port = process.env.PORT || 3000
-app.listen(port, () => console.log(`Server on in  http://127.0.0.1:${port}`))
+// 404
+app.use((req, res) => res.status(404).json({ message: "Route not found" }));
 
-// arrêt propre
-async function shutdown() {
-  await prisma.$disconnect()
-  process.exit(0)
-}
-process.on('SIGINT', shutdown)
-process.on('SIGTERM', shutdown)
+// errors
+app.use(errorMiddleware);
+
+export default app;

@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -13,8 +7,283 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  nom   String?
+enum Role {
+  CLIENT
+  PRESTATAIRE
+  VENDEUR
+  ADMINISTRATEUR
+}
+
+model Utilisateur {
+  id             String   @id @default(uuid()) @db.Uuid
+  nomComplet     String
+  email          String   @unique
+  telephone      String   @unique
+  motDePasseHash String
+  role           Role
+  dateCreation   DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  client         Client?
+  prestataire    Prestataire?
+  vendeur        Vendeur?
+  administrateur Administrateur?
+  notifications  Notification[]
+
+  @@map("utilisateur")
+}
+
+model Client {
+  id      String  @id @db.Uuid
+  adresse String?
+  type    String?
+  nif     String?
+  siege   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  utilisateur Utilisateur      @relation(fields: [id], references: [id], onDelete: Cascade)
+  demandes    DemandeService[]
+
+  @@map("client")
+}
+
+model Prestataire {
+  id           String   @id @db.Uuid
+  tarifHoraire Decimal? @db.Decimal(12, 2)
+  noteMoyenne  Float?
+  disponible   Boolean  @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  utilisateur Utilisateur             @relation(fields: [id], references: [id], onDelete: Cascade)
+  offres      ServiceOffre[]
+  demandes    DemandeService[]
+  documents   DocumentPrestataire[]
+  specialites PrestataireSpecialite[]
+
+  @@map("prestataire")
+}
+
+model Vendeur {
+  id          String  @id @db.Uuid
+  nomBoutique String?
+  adresse     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  utilisateur Utilisateur @relation(fields: [id], references: [id], onDelete: Cascade)
+  produits    Produit[]
+
+  @@map("vendeur")
+}
+
+model Administrateur {
+  id     String  @id @db.Uuid
+  niveau String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  utilisateur Utilisateur @relation(fields: [id], references: [id], onDelete: Cascade)
+
+  @@map("administrateur")
+}
+
+model CategorieService {
+  id          String  @id @default(uuid()) @db.Uuid
+  nom         String
+  description String?
+  actif       Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  offres ServiceOffre[]
+
+  @@map("categorie_service")
+}
+
+model ServiceOffre {
+  id          String   @id @default(uuid()) @db.Uuid
+  titre       String
+  description String?
+  tempsEstime Int?
+  prix        Decimal? @db.Decimal(12, 2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  prestataireId String @db.Uuid
+  categorieId   String @db.Uuid
+
+  prestataire Prestataire      @relation(fields: [prestataireId], references: [id], onDelete: Cascade)
+  categorie   CategorieService @relation(fields: [categorieId], references: [id], onDelete: Restrict)
+  demandes    DemandeService[]
+
+  @@index([prestataireId])
+  @@index([categorieId])
+  @@map("service_offre")
+}
+
+model DemandeService {
+  id            String    @id @default(uuid()) @db.Uuid
+  dateSouhaitee DateTime?
+  description   String?
+  statut        String
+  coutEstime    Decimal?  @db.Decimal(12, 2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  clientId      String @db.Uuid
+  prestataireId String @db.Uuid
+  offreId       String @db.Uuid
+
+  client      Client       @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  prestataire Prestataire  @relation(fields: [prestataireId], references: [id], onDelete: Restrict)
+  offre       ServiceOffre @relation(fields: [offreId], references: [id], onDelete: Restrict)
+
+  facture       Facture?
+  piecesJointes PieceJointeDemande[]
+
+  @@index([clientId])
+  @@index([prestataireId])
+  @@index([offreId])
+  @@map("demande_service")
+}
+
+model Facture {
+  id           String   @id @default(uuid()) @db.Uuid
+  numero       String   @unique
+  dateEmission DateTime @default(now())
+  montantTotal Decimal? @db.Decimal(12, 2)
+  pdfUrl       String?
+  statut       String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  demandeId String         @unique @db.Uuid
+  demande   DemandeService @relation(fields: [demandeId], references: [id], onDelete: Cascade)
+
+  paiements Paiement[]
+
+  @@index([demandeId])
+  @@map("facture")
+}
+
+model Paiement {
+  id           String   @id @default(uuid()) @db.Uuid
+  montant      Decimal? @db.Decimal(12, 2)
+  modePaye     String
+  datePaiement DateTime @default(now())
+  statut       String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  factureId String  @db.Uuid
+  facture   Facture @relation(fields: [factureId], references: [id], onDelete: Cascade)
+
+  @@index([factureId])
+  @@map("paiement")
+}
+
+model Notification {
+  id        String   @id @default(uuid()) @db.Uuid
+  type      String
+  message   String
+  canal     String
+  dateEnvoi DateTime @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId      String      @db.Uuid
+  utilisateur Utilisateur @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("notification")
+}
+
+model Produit {
+  id          String   @id @default(uuid()) @db.Uuid
+  nom         String
+  description String?
+  stock       Int      @default(0)
+  prix        Decimal? @db.Decimal(12, 2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  vendeurId String  @db.Uuid
+  vendeur   Vendeur @relation(fields: [vendeurId], references: [id], onDelete: Cascade)
+
+  @@index([vendeurId])
+  @@map("produit")
+}
+
+model DocumentPrestataire {
+  id        String   @id @default(uuid()) @db.Uuid
+  type      String
+  url       String
+  dateDepot DateTime @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  prestataireId String      @db.Uuid
+  prestataire   Prestataire @relation(fields: [prestataireId], references: [id], onDelete: Cascade)
+
+  @@index([prestataireId])
+  @@map("document_prestataire")
+}
+
+model PieceJointeDemande {
+  id        String   @id @default(uuid()) @db.Uuid
+  type      String
+  url       String
+  dateAjout DateTime @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  demandeId String         @db.Uuid
+  demande   DemandeService @relation(fields: [demandeId], references: [id], onDelete: Cascade)
+
+  @@index([demandeId])
+  @@map("piece_jointe_demande")
+}
+
+model Specialite {
+  id      String @id @default(uuid()) @db.Uuid
+  libelle String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  prestataires PrestataireSpecialite[]
+
+  @@map("specialite")
+}
+
+model PrestataireSpecialite {
+  id            String @id @default(uuid()) @db.Uuid
+  prestataireId String @db.Uuid
+  specialiteId  String @db.Uuid
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  prestataire Prestataire @relation(fields: [prestataireId], references: [id], onDelete: Cascade)
+  specialite  Specialite  @relation(fields: [specialiteId], references: [id], onDelete: Cascade)
+
+  @@unique([prestataireId, specialiteId])
+  @@index([specialiteId])
+  @@index([prestataireId])
+  @@map("prestataire_specialite")
 }
