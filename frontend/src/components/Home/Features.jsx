@@ -4,6 +4,7 @@ import Title from './Title';
 import { PrimaryButton } from './Buttons';
 import { motion } from 'framer-motion';
 import { ArrowRightIcon, PlayIcon, ZapIcon, CheckIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Features() {
     const refs = useRef([]);
@@ -54,8 +55,11 @@ export default function Features() {
                                 ))}
                             </ul>
                             <PrimaryButton className={'text-white hover:translate-x-2 '}>
-                                Réserver maintenant
+                                <Link to={'/services'} className='flex  gap-2 items-center'> 
+                                Reserver maintenant 
                                 <ArrowRightIcon className="size-4 hover:translate-x-2 transform transition duration-300 ease-in-out hover:scale-110" /> 
+                                 </Link>
+                                
                             </PrimaryButton>
                             
                         </motion.div>

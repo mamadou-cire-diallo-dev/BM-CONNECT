@@ -6,6 +6,7 @@ import Projects from "./pages/Services";
 import Team from "./pages/Payement";
 import ProjectDetails from "./pages/ServiceDetails";
 import Home from "./pages/Home/Home";
+import Services from "./pages/Services/Services";
 
 // clent import
 import DashboardClient from "./pages/Client/Dashboard";
@@ -18,6 +19,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/services" element={<Services />} />
 
         {/* client Routes */}
         <Route path="/client" element={<LayoutClient />}>

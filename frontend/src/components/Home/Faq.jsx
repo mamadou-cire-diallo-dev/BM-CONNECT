@@ -39,7 +39,7 @@ export default function Faq() {
                                 <h4 className="font-medium text-[#f26f0e]">{faq.question}</h4>
                                 <ChevronDownIcon className="w-5 h-5 text-gray-300 group-open:rotate-180 transition-transform" />
                             </summary>
-                            <p className="p-4 pt-0 text-sm text-gray-900 leading-relaxed">
+                            <p className="p-4 pt-0 text-sm text-gray-900 leading-relaxed dark:text-gray-300 ">
                                 {faq.answer}
                             </p>
                         </motion.details>

@@ -23,9 +23,99 @@ export const featuresData = [
     }
 ];
 
+export const trouveServicesData = [
+    {
+        name:'services',
+        desc:'Choisir un service',
+        option:['plomberie','électricité','climatisation'],
+        icon: <SearchCheck className="w-6 h-6 text-[#f26f0e] " />,
+    },
+    {
+        name:'lieu',
+        desc:'Choisir le lieu',
+        option:['Conakry','Mamou','Kindia','Labé','Dalaba'],
+        icon: <MapPin className="w-6 h-6 text-[#f26f0e]" />,
+    },
+    {
+        name:'prix',
+        desc:'Filtrer par prix',
+        option:['100.000gnf','50.000gnf','200.000gnf'],
+        icon: <Filter className="w-6 h-6 text-[#f26f0e]" />,
+    }
+]
+
+export const prestatairesDispo = [
+    {
+        prenom:'Mouctar',
+        image:'/images/mKourouma.webp',
+        nom:'Barry',
+        fonctions:['plomberie','climatisation'],
+        specialiste:'Plomberie',
+        evaluation:4.8,
+        lieu:'Kaloum, Conakry',
+        status:1 ,
+        prix_diagnostic:50000
+    },
+    {
+        prenom:'Mamadou Cire',
+        nom:'DIALLO',
+        image:'/images/mCisse.jpg',
+        fonctions:['Electricité','climatisation'],
+        specialiste:'Electricité',
+        evaluation:4.8,
+        lieu:'Petel, Mamou',
+        status:1 ,
+        prix_diagnostic:100000
+    },
+    {
+        prenom:'Issaga',
+        nom:'DIALLO',
+        image:'/images/mMamadou.avif',
+        fonctions:['climatisation'],
+        specialiste:'Climatisation',
+        evaluation:4.1,
+        lieu:'Centre, Dalaba',
+        status:0 ,
+        prix_diagnostic:30000
+    },
+    {
+        prenom:'Aissatou Bobo ',
+        nom:'DIALLO',
+        image:'/images/groupeMaintenancier.png',
+        fonctions:['plomberie','electricité'],
+        specialiste:'electricité',
+        evaluation:5.1,
+        lieu:'Abbatoir, Kindia',
+        status:0 ,
+        prix_diagnostic:50000
+    },
+    {
+        prenom:'Alpha Oumar',
+        nom:'BALDE',
+        image:'/images/groupeMaintenancierReel.png',
+        fonctions:['plomberie'],
+        specialiste:'plomberie',
+        evaluation:5.1,
+        lieu:'Kaloum, Conakry',
+        status:0 ,
+        prix_diagnostic:50000
+    },
+    {
+        prenom:'Mariame',
+        nom:'DIANE',
+        image:'/images/groupeMaintenancier.png',
+        fonctions:['electricité','climatisation'],
+        specialiste:'Climatisation',
+        evaluation:4.8,
+        lieu:'Ratoma, Conakry',
+        status:1 ,
+        prix_diagnostic:100000
+    },
+]
+
 export const ValeurData = [
     {
-        icon: <Filter            className="w-6 h-6 text-white" />,
+        icon: <Filter className="w-6 h-6 text-white" />,
         title: 'Recherche',
         desc:'Trouvez rapidement des prestataires qualifiés près de chez vous',
         codeCouleur:'#2563EB',
@@ -56,7 +146,7 @@ export const ValeurData = [
         icon: <Star className="w-6 h-6 text-white" />,
         title: 'Evaluation & Avis',
         desc: "Consultez les notes et commentaires des clients",
-         codeCouleur:'#7C3AED',
+        codeCouleur:'#7C3AED',
         degrade:'#FDE047'
     },
      {

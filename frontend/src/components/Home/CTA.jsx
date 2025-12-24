@@ -23,7 +23,7 @@ export default function CTA() {
                             viewport={{ once: true }}
                             transition={{ type: "spring", stiffness: 250, damping: 70, mass: 1, delay: 0.2 }}
                         >
-                            Rejoignez des milliers d'utilisateurs qui font confiance à MaintenanceGN pour leurs besoins en maintenance
+                            Rejoignez des milliers d'utilisateurs qui font confiance à BMConnect pour leurs besoins en maintenance
                         </motion.p>
                         <motion.div
                             initial={{ y: 60, opacity: 0 }}

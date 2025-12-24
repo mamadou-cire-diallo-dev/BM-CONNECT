@@ -20,7 +20,7 @@ export default function Footer() {
                             <Link to="/home">
                             <img src={logo2} alt="logo"  className="max-h-10 max-w-[120px] object-contain p-0" />
                             </Link>
-                            <span className=" text-[#0d2e55] font-semibold   text-lg  tracking-tight leading-none top-[2px]  ">
+                            <span className=" text-[#0d2e55] font-semibold shadow-xl   text-lg  tracking-tight leading-none top-[2px]  ">
                                 BM<span className="text-[#f26f0e]">Connect</span>
                             </span>
                         </div>
