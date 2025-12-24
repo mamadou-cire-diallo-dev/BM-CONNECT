@@ -19,7 +19,7 @@ import {
 import { paiementsAvecDetails } from "../assets/data";
 import { demandesServicesPrestataire } from "../assets/data";
 
-export default function ProjectDetail() {
+export default function ServiceDetail() {
   const [searchParams, setSearchParams] = useSearchParams();
   const tab = searchParams.get("tab");
   const id = searchParams.get("id");

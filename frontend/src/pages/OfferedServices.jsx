@@ -13,7 +13,11 @@ import {
     ArrowRight,
     TrendingUp,
     Zap,
-    Award
+    Award,
+    ChevronDown,
+    Download,
+    Share2,
+    X
 } from 'lucide-react';
 
 // --- Mock Data ---
@@ -30,7 +34,10 @@ const initialServices = [
         status: "ACTIVE",
         image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800",
         category: "Nettoyage",
-        tags: ["Populaire", "Entreprise"]
+        tags: ["Populaire", "Entreprise"],
+        bookings: 156,
+        revenue: "39 000 000",
+        dateAdded: "15/03/2024"
     },
     {
         id: 2,
@@ -44,7 +51,10 @@ const initialServices = [
         status: "ACTIVE",
         image: "https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&q=80&w=800",
         category: "Plomberie",
-        tags: ["Urgence"]
+        tags: ["Urgence"],
+        bookings: 89,
+        revenue: "13 350 000",
+        dateAdded: "22/02/2024"
     },
     {
         id: 3,
@@ -58,7 +68,10 @@ const initialServices = [
         status: "INACTIVE",
         image: "https://images.unsplash.com/photo-1558904541-efa843a96f01?auto=format&fit=crop&q=80&w=800",
         category: "Jardinage",
-        tags: ["Saisonnier"]
+        tags: ["Saisonnier"],
+        bookings: 31,
+        revenue: "4 200 000",
+        dateAdded: "10/01/2024"
     },
     {
         id: 4,
@@ -72,7 +85,10 @@ const initialServices = [
         status: "ACTIVE",
         image: "https://images.unsplash.com/photo-1621905476438-5a4a39771564?auto=format&fit=crop&q=80&w=800",
         category: "Électricité",
-        tags: ["Certifié"]
+        tags: ["Certifié"],
+        bookings: 178,
+        revenue: "35 600 000",
+        dateAdded: "05/03/2024"
     },
     {
         id: 5,
@@ -86,7 +102,10 @@ const initialServices = [
         status: "ACTIVE",
         image: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&q=80&w=800",
         category: "Rénovation",
-        tags: ["Déco"]
+        tags: ["Déco"],
+        bookings: 47,
+        revenue: "6 580 000",
+        dateAdded: "28/02/2024"
     },
     {
         id: 6,
@@ -100,13 +119,16 @@ const initialServices = [
         status: "ACTIVE",
         image: "https://images.unsplash.com/photo-1600585152220-9036cfa24723?auto=format&fit=crop&q=80&w=800",
         category: "Déménagement",
-        tags: [" Assurance incluse"]
+        tags: [" Assurance incluse"],
+        bookings: 72,
+        revenue: "108 000 000",
+        dateAdded: "14/03/2024"
     },
 ];
 
 const ServiceCard = ({ service }) => (
     <div className="group relative bg-white dark:bg-zinc-900 rounded-[2rem] border border-slate-100 dark:border-zinc-800 overflow-hidden hover:shadow-2xl hover:shadow-slate-200/50 dark:hover:shadow-black/50 transition-all duration-500 h-full flex flex-col">
-        {/* Floating Action Buttons (Hidden by default, appear on hover) */}
+        {/* Floating Action Buttons */}
         <div className="absolute top-4 right-4 z-20 flex flex-col gap-2 translate-x-12 group-hover:translate-x-0 transition-transform duration-300 opacity-0 group-hover:opacity-100">
             <button className="p-3 bg-white/95 backdrop-blur-md rounded-full shadow-lg text-slate-700 hover:text-orange-500 hover:scale-110 transition-all border border-slate-100">
                 <Edit3 size={18} />
@@ -119,7 +141,7 @@ const ServiceCard = ({ service }) => (
             </button>
         </div>
 
-        {/* Image Section with Overlay */}
+        {/* Image Section */}
         <div className="relative h-64 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10 opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
             <img
@@ -129,9 +151,9 @@ const ServiceCard = ({ service }) => (
             />
 
             <div className="absolute top-4 left-4 z-20">
-                <span className={`px-3 py-1.5 rounded-full text-xs font-bold shadow-lg backdrop-blur-md border border-white/10 ${service.status === 'ACTIVE'
-                    ? 'bg-emerald-500/90 text-white'
-                    : 'bg-slate-500/90 text-white'
+                <span className={`px-3 py-1.5 rounded-full text-xs font-bold shadow-lg backdrop-blur-md border ${service.status === 'ACTIVE'
+                    ? 'bg-emerald-500/90 text-white border-emerald-600'
+                    : 'bg-slate-500/90 text-white border-slate-600'
                     }`}>
                     {service.status === 'ACTIVE' ? 'Actif' : 'Inactif'}
                 </span>
@@ -184,25 +206,92 @@ const ServiceCard = ({ service }) => (
     </div>
 );
 
+const ServiceTableRow = ({ service }) => (
+    <tr className="group hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-all duration-300 border-b border-slate-100 dark:border-zinc-800 last:border-0">
+        <td className="py-4 px-6">
+            <div className="flex items-center gap-4">
+                <div className="relative w-16 h-16 rounded-2xl overflow-hidden">
+                    <img src={service.image} alt={service.title} className="w-full h-full object-cover" />
+                    <div className={`absolute top-1 right-1 w-2 h-2 rounded-full ${service.status === 'ACTIVE' ? 'bg-emerald-500' : 'bg-slate-500'}`} />
+                </div>
+                <div>
+                    <h3 className="font-bold text-slate-900 dark:text-white group-hover:text-orange-600 transition-colors">
+                        {service.title}
+                    </h3>
+                    <p className="text-xs text-slate-500">{service.category}</p>
+                </div>
+            </div>
+        </td>
+        <td className="py-4 px-6">
+            <div className="flex items-center gap-1.5">
+                <Star size={14} className="text-amber-500 fill-amber-500" />
+                <span className="font-bold text-slate-900 dark:text-white">{service.rating}</span>
+                <span className="text-xs text-slate-500">({service.reviews})</span>
+            </div>
+        </td>
+        <td className="py-4 px-6">
+            <div className="flex flex-col">
+                <span className="font-bold text-slate-900 dark:text-white">{service.price} {service.currency}</span>
+                {service.unit && <span className="text-xs text-slate-500">{service.unit}</span>}
+            </div>
+        </td>
+        <td className="py-4 px-6">
+            <div className="flex flex-col">
+                <span className="font-bold text-slate-900 dark:text-white">{service.bookings}</span>
+                <span className="text-xs text-slate-500">réservations</span>
+            </div>
+        </td>
+        <td className="py-4 px-6">
+            <span className={`px-3 py-1 rounded-full text-xs font-bold ${service.status === 'ACTIVE'
+                ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-400'
+                }`}>
+                {service.status === 'ACTIVE' ? 'Actif' : 'Inactif'}
+            </span>
+        </td>
+        <td className="py-4 px-6">
+            <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-600 dark:text-slate-400">
+                    <Eye size={18} />
+                </button>
+                <button className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-600 dark:text-slate-400">
+                    <Edit3 size={18} />
+                </button>
+                <button className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-zinc-800 text-red-500">
+                    <Trash2 size={18} />
+                </button>
+                <button className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-600 dark:text-slate-400">
+                    <MoreHorizontal size={18} />
+                </button>
+            </div>
+        </td>
+    </tr>
+);
+
+
 export default function OfferedServices() {
     const [services, setServices] = useState(initialServices);
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("Tous");
-    const [viewMode, setViewMode] = useState("grid"); // 'grid' | 'list'
+    const [viewMode, setViewMode] = useState("grid");
+    const [showFilters, setShowFilters] = useState(false);
+    const [statusFilter, setStatusFilter] = useState("TOUS");
 
     const categories = ["Tous", ...new Set(initialServices.map(s => s.category))];
+    const statuses = ["TOUS", "ACTIVE", "INACTIVE"];
 
     const filteredServices = services.filter(service => {
-        const matchesSearch = service.title.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesSearch = service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            service.description.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesCategory = selectedCategory === "Tous" || service.category === selectedCategory;
-        return matchesSearch && matchesCategory;
+        const matchesStatus = statusFilter === "TOUS" || service.status === statusFilter;
+        return matchesSearch && matchesCategory && matchesStatus;
     });
 
     return (
-        <div className=" space-y-6 max-w-7xl mx-auto">
-
+        <div className="space-y-6 max-w-7xl mx-auto px-4 md:px-6">
             {/* Hero Header */}
-            <div className="relative rounded-[2.5rem] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 dark:from-orange-600 dark:via-orange-700 dark:to-orange-900 overflow-hidden shadow-2xl shadow-slate-900/20">
+            <div className="relative rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 dark:from-orange-600 dark:via-orange-700 dark:to-orange-900 overflow-hidden shadow-2xl shadow-slate-900/20">
                 {/* Decorative Elements */}
                 <div className="absolute top-0 right-0 p-20 opacity-10">
                     <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-96 h-96 fill-white">
@@ -210,25 +299,25 @@ export default function OfferedServices() {
                     </svg>
                 </div>
 
-                <div className="relative z-10 px-8 py-12 md:px-12 md:py-16 flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
+                <div className="relative z-10 p-8 md:px-12 md:py-16 flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
                     <div className="space-y-4 max-w-2xl">
                         <div className="flex items-center gap-2 text-orange-400 dark:text-orange-200 font-bold uppercase tracking-widest text-sm animate-in slide-in-from-bottom-2 fade-in duration-500">
                             <Award size={18} />
                             <span>Catalogue Premium</span>
                         </div>
                         <h1 className="text-4xl md:text-5xl font-black text-white leading-tight animate-in slide-in-from-bottom-4 fade-in duration-700 delay-100">
-                            Gérez vos <span className="text-orange-500 dark:text-white decoration-4 underline decoration-orange-500/30 underline-offset-8">Services</span> avec Élégance.
+                            Gérez vos <span className="text-orange-500 dark:text-slate-900 decoration-4 underline decoration-orange-500/30 dark:decoration-slate-400/40 underline-offset-8">Services</span> avec Élégance.
                         </h1>
                         <p className="text-lg text-slate-300 dark:text-orange-100 max-w-xl animate-in slide-in-from-bottom-4 fade-in duration-700 delay-200">
                             Mettez en valeur votre expertise. Un catalogue bien organisé attire jusqu'à 2x plus de clients potentiels.
                         </p>
 
                         <div className="flex flex-wrap gap-4 pt-4 animate-in slide-in-from-bottom-6 fade-in duration-700 delay-300">
-                            <button className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-2xl font-bold transition-all shadow-lg shadow-orange-500/30 transform hover:-translate-y-1">
+                            <button className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-full font-bold transition-all shadow-lg shadow-orange-500/30 transform hover:-translate-y-1 active:scale-95">
                                 <Plus size={20} strokeWidth={3} />
                                 <span>Nouveau Service</span>
                             </button>
-                            <button className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-6 py-4 rounded-2xl font-bold backdrop-blur-md transition-all border border-white/10">
+                            <button className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-full font-bold backdrop-blur-md transition-all border border-white/10">
                                 <TrendingUp size={20} />
                                 <span>Voir les tendances</span>
                             </button>
@@ -249,107 +338,35 @@ export default function OfferedServices() {
                 </div>
             </div>
 
-            {/* Control Bar */}
-            <div className="sticky top-2 z-30 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border border-slate-200 dark:border-zinc-800 rounded-2xl p-4 shadow-lg shadow-slate-200/20 dark:shadow-black/20 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
-                <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
+          
 
-                    {/* Filter Tabs */}
-                    <div className="flex items-center gap-2 overflow-x-auto w-full lg:w-auto hide-scrollbar pb-1 lg:pb-0">
-                        {categories.map(cat => (
-                            <button
-                                key={cat}
-                                onClick={() => setSelectedCategory(cat)}
-                                className={`px-5 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all duration-300 ${selectedCategory === cat
-                                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-md transform scale-105'
-                                    : 'bg-transparent text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-zinc-800'
-                                    }`}
-                            >
-                                {cat}
-                            </button>
-                        ))}
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex items-center gap-3 w-full lg:w-auto">
-                        <div className="relative flex-1 lg:flex-none group">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-orange-500 transition-colors" size={18} />
-                            <input
-                                type="text"
-                                placeholder="Rechercher..."
-                                className="w-full lg:w-72 pl-11 pr-4 py-3 bg-slate-100 dark:bg-zinc-800 border-none rounded-xl text-sm font-medium focus:ring-2 focus:ring-orange-500/50 outline-none transition-all"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                        </div>
-
-                        <div className="h-8 w-px bg-slate-200 dark:bg-zinc-800 mx-1 hidden lg:block" />
-
-                        <div className="flex items-center gap-1 p-1 bg-slate-100 dark:bg-zinc-800 rounded-xl">
-                            <button
-                                onClick={() => setViewMode('grid')}
-                                className={`p-2 rounded-lg transition-all ${viewMode === 'grid'
-                                    ? 'bg-white dark:bg-zinc-700 shadow-sm text-slate-900 dark:text-white'
-                                    : 'text-slate-400 hover:text-slate-600'
-                                    }`}
-                            >
-                                <Grid size={18} />
-                            </button>
-                            <button
-                                onClick={() => setViewMode('list')}
-                                className={`p-2 rounded-lg transition-all ${viewMode === 'list'
-                                    ? 'bg-white dark:bg-zinc-700 shadow-sm text-slate-900 dark:text-white'
-                                    : 'text-slate-400 hover:text-slate-600'
-                                    }`}
-                            >
-                                <List size={18} />
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Grid Content */}
-            <div className={`grid gap-6 sm:gap-8 ${viewMode === 'grid'
-                ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
-                : 'grid-cols-1'
-                } animate-in slide-in-from-bottom-8 fade-in duration-700 delay-500`}>
-
-                {/* Add New Card */}
-                <button className="group relative border-2 border-dashed border-slate-200 dark:border-zinc-800 rounded-[2rem] flex flex-col items-center justify-center p-8 hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50/50 dark:hover:bg-orange-900/10 transition-all duration-300 min-h-[400px]">
-                    <div className="absolute inset-0 bg-dot-pattern opacity-5 pointer-events-none" />
-                    <div className="w-20 h-20 rounded-full bg-slate-50 dark:bg-zinc-800 group-hover:bg-orange-100 dark:group-hover:bg-orange-900/40 flex items-center justify-center text-slate-400 group-hover:text-orange-600 transition-all duration-300 mb-6 group-hover:scale-110 shadow-sm">
-                        <Plus size={36} strokeWidth={2.5} />
-                    </div>
-                    <h3 className="font-bold text-slate-900 dark:text-white text-xl mb-2">Ajouter un service</h3>
-                    <p className="text-slate-500 text-center max-w-[200px] leading-relaxed">
-                        Créez une nouvelle fiche service pour développer votre offre.
-                    </p>
-                </button>
-
-                {/* Service Cards */}
-                {filteredServices.map((service) => (
-                    <ServiceCard key={service.id} service={service} />
-                ))}
-            </div>
-
+            {/* Empty State */}
             {filteredServices.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-20 text-center animate-in fade-in zoom-in duration-500">
-                    <div className="w-24 h-24 bg-slate-50 dark:bg-zinc-900 rounded-full flex items-center justify-center text-slate-300 mb-6 font-bold text-5xl">
-                        ?
+                    <div className="w-24 h-24 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-zinc-800 dark:to-zinc-900 rounded-full flex items-center justify-center text-slate-300 mb-6 font-bold text-5xl">
+                        <Search size={48} />
                     </div>
                     <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Aucun service trouvé</h2>
-                    <p className="text-slate-500 max-w-md mx-auto">
-                        Nous n'avons trouvé aucun service correspondant à votre recherche. Essayez de changer de catégorie ou de mot-clé.
+                    <p className="text-slate-500 max-w-md mx-auto mb-6">
+                        Aucun service ne correspond à vos critères de recherche. Essayez de modifier vos filtres ou votre recherche.
                     </p>
                     <button
-                        onClick={() => { setSearchTerm(""); setSelectedCategory("Tous") }}
-                        className="mt-8 text-orange-600 font-bold hover:underline"
+                        onClick={() => {
+                            setSearchTerm("");
+                            setSelectedCategory("Tous");
+                            setStatusFilter("TOUS");
+                        }}
+                        className="px-6 py-3 bg-orange-600 text-white rounded-full font-bold hover:bg-orange-700 transition-all shadow-lg shadow-orange-500/30"
                     >
-                        Réinitialiser les filtres
+                        Réinitialiser tous les filtres
                     </button>
                 </div>
             )}
 
+            {/* Floating Action Button */}
+            <button className="fixed bottom-8 right-8 w-14 h-14 bg-orange-600 text-white rounded-full flex items-center justify-center shadow-xl shadow-orange-500/30 hover:scale-110 hover:shadow-2xl hover:shadow-orange-500/50 transition-all duration-300 z-50 animate-in slide-in-from-bottom-12 fade-in duration-1000 delay-1000">
+                <Plus size={24} />
+            </button>
         </div>
     );
 }

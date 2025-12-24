@@ -4,13 +4,14 @@ import { Toaster } from "react-hot-toast";
 import Dashboard from "./pages/Dashboard";
 import Projects from "./pages/Services";
 import Team from "./pages/Payement";
-import OfferedServices from "./pages/OfferedServices";
-import ProjectDetails from "./pages/ServiceDetails";
+
+import ServiceDetails from "./pages/ServiceDetails";
 import Home from "./pages/Home/Home";
 
 // clent import
 import DashboardClient from "./pages/Client/Dashboard";
 import LayoutClient from "./pages/Client/Layout";
+import OfferedServices from "./pages/OfferedServices.jsx";
 
 const App = () => {
   return (
@@ -28,7 +29,7 @@ const App = () => {
           <Route path="payement" element={<Team />} />
           <Route path="services" element={<Projects />} />
           <Route path="service" element={<OfferedServices />} />
-          <Route path="serviceDetail" element={<ProjectDetails />} />
+          <Route path="serviceDetail" element={<ServiceDetails />} />
         </Route>
       </Routes>
     </>

@@ -32,11 +32,13 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setIsSidebarOpen]);
+  // verifier si la taille de lecran est supérieure à md (768px) pour quant on ferme on voit les icons
+  const isDesktop = window.innerWidth >= 768;
 
   return (
       <aside
       ref={sidebarRef}
-      className={`bg-[#0F172A] flex flex-col transition-all duration-300 ${isSidebarOpen ? 'w-64' : 'w-0'
+      className={`bg-[#0F172A] flex flex-col dark:bg-zinc-900 ${isSidebarOpen ? 'w-64' : isDesktop ? 'w-20 ' : 'w-0 transition-all duration-300'
         } h-screen fixed lg:static z-[100] overflow-hidden shadow-xl lg:shadow-none`}
       >
         <div className="p-6 flex items-center justify-between h-20">
@@ -90,10 +92,26 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
         </nav>
 
       <div className="p-4 border-t border-slate-800">
-        <button className={`flex items-center gap-3 w-full px-4 py-3 text-slate-400 hover:text-white transition-colors ${!isSidebarOpen && 'justify-center'}`}>
+        {/* user infos */}
+        <div>
+          <div className={`flex items-center gap-3 mb-2 ${!isSidebarOpen && 'justify-center'}`}>
+            <img
+              src="https://i.pravatar.cc/4"
+              alt="User Avatar"
+              className="w-10 h-10 rounded-full object-cover"
+            />
+            {isSidebarOpen && (
+              <div>
+                <p className="text-white font-medium">Alpha Oumar Balde</p>
+                <p className="text-sm text-slate-400">alphaoumar@gmail.com</p>
+              </div>
+            )}
+          </div>
+        </div>
+        {/* <button className={`flex items-center gap-3 w-full px-4 py-2 text-slate-400 hover:text-white transition-colors ${!isSidebarOpen && 'justify-center'}`}>
           <LogOut size={20} />
           {isSidebarOpen && <span className="font-medium">Déconnexion</span>}
-          </button>
+          </button> */}
         </div>
       </aside>
   );

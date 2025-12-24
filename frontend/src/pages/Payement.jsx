@@ -177,7 +177,7 @@ const StatCard = ({ title, amount, percentage, icon: Icon, colorClass, trend }) 
 );
 
 export default function Payement() {
-  const [activeTab, setActiveTab] = useState('transactions'); // Defaulting to transactions for presentation
+  const [activeTab, setActiveTab] = useState('overview'); // Defaulting to transactions for presentation
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredTransactions = transactionsData.filter(t =>
@@ -187,7 +187,7 @@ export default function Payement() {
   );
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto custom-scrollbar h-full overflow-y-auto p-2 pb-10">
+    <div className="space-y-6 max-w-7xl">
 
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -336,15 +336,15 @@ export default function Payement() {
 
       {activeTab === 'transactions' && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <div className="bg-white dark:bg-zinc-900 rounded-[2rem] border border-slate-100 dark:border-zinc-800 shadow-xl shadow-slate-200/50 dark:shadow-none overflow-hidden min-h-[600px]">
+          <div className="bg-white dark:bg-zinc-900 rounded-xl border border-slate-100 dark:border-zinc-800 shadow-xl shadow-slate-200/50 dark:shadow-none overflow-hidden min-h-[600px]">
 
             {/* Table Header Controls */}
-            <div className="p-8 border-b border-slate-100 dark:border-zinc-800/50 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div className="p-8 py-3 border-b border-slate-100 dark:border-zinc-800/50 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <div>
                 <h3 className="text-xl font-bold text-slate-900 dark:text-white">Historique des Transactions</h3>
-                <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
+                {/* <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
                   Affiche les <span className="font-semibold text-slate-800 dark:text-slate-200">{filteredTransactions.length}</span> transactions récentes
-                </p>
+                </p> */}
               </div>
 
               <div className="flex items-center gap-3 w-full lg:w-auto">
@@ -365,7 +365,7 @@ export default function Payement() {
             </div>
 
             {/* Mobile View (Enhanced Cards) */}
-            <div className="block sm:hidden p-4 space-y-4 bg-slate-50/50 dark:bg-zinc-900/50">
+            <div className="block sm:hidden p-4 space-y-4">
               {filteredTransactions.map((transaction) => (
                 <div key={transaction.id} className="bg-white dark:bg-zinc-800 p-5 rounded-2xl border border-slate-100 dark:border-zinc-700 shadow-sm active:scale-[0.98] transition-transform">
                   <div className="flex justify-between items-start mb-4">
@@ -414,30 +414,30 @@ export default function Payement() {
             <div className="hidden sm:block overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-slate-100 dark:border-zinc-800 bg-slate-50/30 dark:bg-zinc-800/20">
-                    <th className="px-8 py-5 text-[11px] font-bold text-slate-400 uppercase tracking-widest">Client & contact</th>
-                    <th className="px-6 py-5 text-[11px] font-bold text-slate-400 uppercase tracking-widest">Détails Service</th>
-                    <th className="px-6 py-5 text-[11px] font-bold text-slate-400 uppercase tracking-widest">Date</th>
-                    <th className="px-6 py-5 text-[11px] font-bold text-slate-400 uppercase tracking-widest">Statut</th>
-                    <th className="px-6 py-5 text-[11px] font-bold text-slate-400 uppercase tracking-widest text-right">Montant</th>
-                    <th className="px-6 py-5 text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center">Actions</th>
+                  <tr className="border-b border-slate-100 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800">
+                    <th className="px-8 py-4 text-[11px] font-bold text-slate-400 uppercase tracking-widest">Client & contact</th>
+                    <th className="px-6 py-4 text-[11px] font-bold text-slate-400 uppercase tracking-widest">Détails Service</th>
+                    <th className="px-6 py-4 text-[11px] font-bold text-slate-400 uppercase tracking-widest">Date</th>
+                    <th className="px-6 py-4 text-[11px] font-bold text-slate-400 uppercase tracking-widest">Statut</th>
+                    <th className="px-6 py-4 text-[11px] font-bold text-slate-400 uppercase tracking-widest text-right">Montant</th>
+                    <th className="px-6 py-4 text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-zinc-800">
                   {filteredTransactions.map((transaction) => (
                     <tr key={transaction.id} className="group hover:bg-slate-50/80 dark:hover:bg-zinc-800/40 transition-colors duration-200">
-                      <td className="px-8 py-5">
+                      <td className="px-8 py-2">
                         <div className="flex items-center gap-4">
                           <div className={`w-11 h-11 rounded-full ${transaction.avatarColor} flex items-center justify-center text-white font-bold text-sm shadow-md ring-4 ring-white dark:ring-zinc-900 group-hover:scale-105 transition-transform duration-300`}>
                             {getInitials(transaction.client)}
                           </div>
                           <div>
                             <div className="font-bold text-slate-900 dark:text-white text-[15px]">{transaction.client}</div>
-                            <div className="text-xs text-slate-500 font-medium mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">{transaction.email}</div>
+                            <div className="text-xs text-slate-500 font-medium mt-0.5 opacity- group-hover:opacity-100 transition-opacity duration-300">{transaction.email}</div>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-5">
+                      <td className="px-6 py-2">
                         <div className="flex flex-col gap-1">
                           <span className="font-semibold text-slate-800 dark:text-slate-200 text-sm">{transaction.service}</span>
                           <div className="flex items-center gap-1.5">
@@ -447,7 +447,7 @@ export default function Payement() {
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-5">
+                      <td className="px-6 py-2">
                         <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 font-medium">
                           <div className="p-1.5 rounded-lg bg-slate-100 dark:bg-zinc-800 text-slate-400">
                             <Calendar size={14} />
@@ -455,14 +455,14 @@ export default function Payement() {
                           {new Date(transaction.datePaiement).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}
                         </div>
                       </td>
-                      <td className="px-6 py-5">
+                      <td className="px-6 py-2">
                         <PaymentStatusBadge status={transaction.statut} />
                       </td>
-                      <td className="px-6 py-5 text-right">
+                      <td className="px-6 py-2 text-right">
                         <div className="font-black text-slate-900 dark:text-white text-sm tracking-tight">{transaction.montant.toLocaleString()} GNF</div>
                         <div className="text-xs text-slate-400 font-medium mt-0.5">{transaction.modePaye}</div>
                       </td>
-                      <td className="px-6 py-5 text-center">
+                      <td className="px-6 py-2 text-center">
                         <button className="p-2 rounded-xl text-slate-400 hover:text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/10 transition-all opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 duration-200">
                           <MoreHorizontal size={20} />
                         </button>
@@ -474,8 +474,8 @@ export default function Payement() {
             </div>
 
             {/* Modern Pagination Footer */}
-            <div className="p-6 border-t border-slate-100 dark:border-zinc-800 flex justify-between items-center bg-slate-50/30 dark:bg-zinc-800/20">
-              <span className="text-sm text-slate-500 font-medium">
+            <div className="p-6 py-2.5 border-t border-slate-100 dark:border-zinc-800 flex justify-between items-center bg-slate-50/30 dark:bg-zinc-800/20">
+              <span className="text-sm text-slate-500 max-sm:hidden font-medium">
                 Affichage de 1 à {filteredTransactions.length} sur {filteredTransactions.length} entrées
               </span>
               <div className="flex gap-2">

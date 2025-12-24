@@ -25,7 +25,7 @@ const Layout = () => {
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         />
-        <div className="flex-1 h-full p-6 xl:p-10 xl:px-8 overflow-y-scroll">
+        <div className="flex-1 h-full p-5 xl:p-10 xl:px-8 overflow-y-scroll">
           <Outlet />
         </div>
       </div>
