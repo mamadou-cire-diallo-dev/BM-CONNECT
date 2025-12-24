@@ -4,13 +4,15 @@ import { Toaster } from "react-hot-toast";
 import Dashboard from "./pages/Dashboard";
 import Projects from "./pages/Services";
 import Team from "./pages/Payement";
-import ProjectDetails from "./pages/ServiceDetails";
+
+import ServiceDetails from "./pages/ServiceDetails";
 import Home from "./pages/Home/Home";
 import Services from "./pages/Services/Services";
 
 // clent import
 import DashboardClient from "./pages/Client/Dashboard";
 import LayoutClient from "./pages/Client/Layout";
+import OfferedServices from "./pages/OfferedServices.jsx";
 
 const App = () => {
   return (
@@ -29,7 +31,8 @@ const App = () => {
           <Route index element={<Dashboard />} />
           <Route path="payement" element={<Team />} />
           <Route path="services" element={<Projects />} />
-          <Route path="serviceDetail" element={<ProjectDetails />} />
+          <Route path="service" element={<OfferedServices />} />
+          <Route path="serviceDetail" element={<ServiceDetails />} />
         </Route>
       </Routes>
     </>
