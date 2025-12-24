@@ -9,7 +9,7 @@ import { ArrowRightIcon, PlayIcon, ZapIcon, CheckIcon } from 'lucide-react';
 export default function Filtre() {
     const refs = useRef([]);
     return (
-        <section id="valeurs" className="py-20 2xl:py-32 my-10 w-full ">
+        <section id="valeurs" className="py-20 2xl:py-32 my-10 w-full text-black ">
             <div className="max-w-6xl mx-auto px-4">
 
                 <Title
