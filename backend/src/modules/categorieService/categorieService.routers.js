@@ -5,14 +5,14 @@ import {
   getOneCategorieController,
   updateCategorieController,
   deleteCategorieController,
-} from "./categorieService.controller.js";
+} from "./categorieService.controllers.js";
 
 const router = express.Router();
 
-router.post("/serviceCategory", createCategorieController);
-router.get("/serviceCategory", getAllCategoriesController);
-router.get("/serviceCategory/:id", getOneCategorieController);
-router.put("/serviceCategory/:id", updateCategorieController);
-router.delete("/serviceCategory/:id", deleteCategorieController);
+router.post("/", createCategorieController);
+router.get("/", getAllCategoriesController);
+router.get("/:id", getOneCategorieController);
+router.put("/:id", updateCategorieController);
+router.delete("/:id", deleteCategorieController);
 
 export default router;

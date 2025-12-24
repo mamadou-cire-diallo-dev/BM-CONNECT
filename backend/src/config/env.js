@@ -7,8 +7,8 @@ const schema = Joi.object({
 
   DATABASE_URL: Joi.string().uri().required(),
 
-  JWT_SECRET: Joi.string().min(20).required(),
-  JWT_EXPIRES_IN: Joi.string().default("7d"),
+  // JWT_SECRET: Joi.string().min(20).required(),
+  // JWT_EXPIRES_IN: Joi.string().default("7d"),
 
   CORS_ORIGIN: Joi.string().default("*"),
 }).unknown(true);
