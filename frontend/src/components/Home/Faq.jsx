@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 export default function Faq() {
     const refs = useRef([]);
     return (
-        <section id="faq" className="py-20 2xl:py-32">
+        <section id="faq" className="py-20 2xl:py-32 text-black">
             <div className="max-w-3xl mx-auto px-4">
 
                 <Title

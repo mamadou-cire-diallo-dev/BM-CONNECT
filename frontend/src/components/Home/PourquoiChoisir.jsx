@@ -8,7 +8,7 @@ import { ArrowRightIcon, PlayIcon, ZapIcon, CheckIcon } from 'lucide-react';
 export default function PourquoiChoisir() {
     const refs = useRef([]);
     return (
-        <section id="valeurs" className="py-20 2xl:py-32">
+        <section id="valeurs" className="py-20 2xl:py-32 text-black">
             <div className="max-w-6xl mx-auto px-4">
 
                 <Title

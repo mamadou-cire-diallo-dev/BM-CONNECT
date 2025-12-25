@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 export default function CTA() {
     return (
-        <section className="py-20 2xl:pb-32 px-4">
+        <section className="py-20 2xl:pb-32 px-4 text-black">
             <div className="container mx-auto max-w-3xl">
                 <div className="rounded-3xl bg-linear-to-br from-[#0d2e55] to-[#0a2444] border border-violet-500/20 p-12 md:p-16 text-center relative overflow-hidden">
                     <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20" />

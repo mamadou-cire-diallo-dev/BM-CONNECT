@@ -66,7 +66,7 @@ export default function Navbar() {
               <SunIcon className="size-4 text-yellow-400" />
             )}
           </button>
-          <button className="text-sm font-medium dark:text-gray-300 dark:hover:text-white transition max-sm:hidden">
+          <button className="text-sm text-black font-medium dark:text-gray-300 dark:hover:text-white transition max-sm:hidden">
             S'inscrire
           </button>
           <PrimaryButton className="max-sm:text-xs hidden sm:inline-block text-white bg-slate-900">

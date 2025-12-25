@@ -33,7 +33,7 @@ function PrestatairesNonDispos({prestataire,i}) {
                                     <img src={prestataire.image} className='w-24 h-20 rounded rounded-lg' alt="avatar" />
                                     <div className='flex flex-col gap-2'>
                                         <span >{prestataire.prenom}  {prestataire.nom} </span>
-                                        <ul className='flex gap-2 text-xs'> 
+                                        <ul className='flex gap-2 text-sm'> 
                                             {prestataire.fonctions.map((fonction,i)=> (
                                             <li key={i}> 
                                                 {fonction}
@@ -41,8 +41,8 @@ function PrestatairesNonDispos({prestataire,i}) {
                                             ))} 
                                         </ul>
                                        
-                                        <span className='text-xs '> Spécialiste : {prestataire.specialiste}</span>
-                                        <div className='flex gap-2 mb-2 text-xs'>
+                                        <span className='text-sm '> Spécialiste : {prestataire.specialiste}</span>
+                                        <div className='flex gap-2 mb-2 text-sm'>
                                              <Star className='w-4 h-4 text-[#FDE047] inline-block '> </Star>
                                              <span>
                                                     {prestataire.evaluation}  (207)
@@ -51,7 +51,7 @@ function PrestatairesNonDispos({prestataire,i}) {
                                          </div>
                                     </div>
                                </div>
-                               <div className='px-4 w-full text-xs flex flex-col gap-2'>
+                               <div className='px-4 w-full text-sm flex flex-col gap-2'>
                                          <span>
                                             <MapPin className='w-4 h-4 text-green-500 inline-block mr-1 '> </MapPin> 
                                              {prestataire.lieu} <div className='size-2 bg-gray-500 rounded rounded-full inline-block mx-2'></div>  2.3 km

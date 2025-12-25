@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 export default function Features() {
     const refs = useRef([]);
     return (
-        <section id="features" className="py-20 2xl:py-32">
+        <section id="features" className="py-20 2xl:py-32 text-black">
             <div className="max-w-6xl mx-auto px-4">
 
                 <Title
@@ -41,7 +41,7 @@ export default function Features() {
                                 {feature.icon}
                             </div>
                             <h3 className="text-lg bg-clip-text text-transparent bg-linear-to-br from-[#f26f0e] to-[#ffb347] dark:text-white font-semibold mb-2">{feature.title}</h3>
-                            <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                            <p className="text-gray-700 dark:text-gray-300 text-sm  leading-relaxed">
                                 {feature.desc}
                             </p>
                             <ul className='flex flex-col gap-4 my-5'>
