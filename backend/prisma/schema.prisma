@@ -14,15 +14,47 @@ enum Role {
   ADMINISTRATEUR
 }
 
+enum AccountStatus {
+  PENDING_CONTACT
+  ACTIVE
+  SUSPENDED
+}
+
+enum VerificationType {
+  EMAIL
+  PHONE
+}
+
+enum PrestataireVerificationStatus {
+  PENDING_DOCS
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+}
+
+enum VerificationPurpose {
+  CONTACT_EMAIL
+  CONTACT_PHONE
+  LOGIN_2FA
+}
+
 model Utilisateur {
-  id             String   @id @default(uuid()) @db.Uuid
+  id             String @id @default(uuid()) @db.Uuid
   nomComplet     String
-  email          String   @unique
-  telephone      String   @unique
+  email          String @unique
+  telephone      String @unique
   motDePasseHash String
   role           Role
-  dateCreation   DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+
+  status            AccountStatus      @default(PENDING_CONTACT)
+  emailVerifiedAt   DateTime?
+  phoneVerifiedAt   DateTime?
+  verificationCodes VerificationCode[]
+  trustedDevices    TrustedDevice[]
+  sessions Session[]
+
+  dateCreation DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   client         Client?
   prestataire    Prestataire?
@@ -54,6 +86,8 @@ model Prestataire {
   tarifHoraire Decimal? @db.Decimal(12, 2)
   noteMoyenne  Float?
   disponible   Boolean  @default(true)
+
+  verificationStatus PrestataireVerificationStatus @default(PENDING_DOCS)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -286,4 +320,62 @@ model PrestataireSpecialite {
   @@index([specialiteId])
   @@index([prestataireId])
   @@map("prestataire_specialite")
+}
+
+model VerificationCode {
+  id        String              @id @default(uuid()) @db.Uuid
+  userId    String              @db.Uuid
+  type      VerificationType
+  purpose   VerificationPurpose
+  codeHash  String
+  expiresAt DateTime
+  usedAt    DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  utilisateur Utilisateur @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type, purpose])
+  @@map("verification_code")
+}
+
+model TrustedDevice {
+  id              String @id @default(uuid()) @db.Uuid
+  userId          String @db.Uuid
+  deviceId        String
+  deviceTokenHash String
+
+  userAgent  String?
+  lastIp     String?
+  createdAt  DateTime  @default(now())
+  lastSeenAt DateTime  @default(now())
+  expiresAt  DateTime
+  revokedAt  DateTime?
+
+  utilisateur Utilisateur @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, deviceId])
+  @@index([userId])
+  @@map("trusted_device")
+}
+
+model Session {
+  id               String   @id @default(uuid()) @db.Uuid
+  userId           String   @db.Uuid
+  refreshTokenHash String   @unique
+  deviceId         String?
+  userAgent        String?
+  ip               String?
+
+  createdAt  DateTime @default(now())
+  lastUsedAt DateTime?
+  expiresAt  DateTime
+  revokedAt  DateTime?
+
+  utilisateur Utilisateur @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([deviceId])
+  @@map("session")
 }
