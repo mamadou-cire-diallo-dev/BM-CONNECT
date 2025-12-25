@@ -97,10 +97,11 @@ model CategorieService {
   id          String  @id @default(uuid()) @db.Uuid
   nom         String
   description String?
-  actif       Boolean @default(true)
+  // actif       Boolean @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
   offres ServiceOffre[]
 
@@ -116,6 +117,7 @@ model ServiceOffre {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
   prestataireId String @db.Uuid
   categorieId   String @db.Uuid

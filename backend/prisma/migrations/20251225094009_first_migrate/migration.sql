@@ -66,9 +66,9 @@ CREATE TABLE "categorie_service" (
     "id" UUID NOT NULL,
     "nom" TEXT NOT NULL,
     "description" TEXT,
-    "actif" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "deletedAt" TIMESTAMP(3),
 
     CONSTRAINT "categorie_service_pkey" PRIMARY KEY ("id")
 );
@@ -82,6 +82,7 @@ CREATE TABLE "service_offre" (
     "prix" DECIMAL(12,2),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "deletedAt" TIMESTAMP(3),
     "prestataireId" UUID NOT NULL,
     "categorieId" UUID NOT NULL,
 

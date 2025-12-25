@@ -5,8 +5,7 @@ import Joi from "joi";
  */
 export const createCategorieSchema = Joi.object({
   nom: Joi.string().trim().min(3).max(100).required(),
-  description: Joi.string().trim().allow(null, ""),
-  actif: Joi.boolean(),
+  description: Joi.string().trim().allow(null, "")
 });
 
 /**
@@ -15,8 +14,7 @@ export const createCategorieSchema = Joi.object({
  */
 export const updateCategorieSchema = Joi.object({
   nom: Joi.string().trim().min(3).max(100),
-  description: Joi.string().trim().allow(null, ""),
-  actif: Joi.boolean(),
+  description: Joi.string().trim().allow(null, "")
 }).min(1); // au moins un champ à mettre à jour
 
 /**

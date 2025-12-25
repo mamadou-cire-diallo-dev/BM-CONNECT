@@ -1,7 +1,7 @@
 import {
   createCategorie,
   getAllCategories,
-  getOneCategorie,
+  // getOneCategorie,
   updateCategorie,
   deleteCategorie,
 } from "./categorieService.services.js";
@@ -60,33 +60,33 @@ export const getAllCategoriesController = async (req, res) => {
 /**
  * Récupérer une catégorie
  */
-export const getOneCategorieController = async (req, res) => {
-  try {
-    const { error } = categorieIdSchema.validate(req.params);
+// export const getOneCategorieController = async (req, res) => {
+//   try {
+//     const { error } = categorieIdSchema.validate(req.params);
 
-    if (error) {
-      return res.status(400).json({
-        message: "ID invalide",
-        errors: error.details.map((d) => d.message),
-      });
-    }
+//     if (error) {
+//       return res.status(400).json({
+//         message: "ID invalide",
+//         errors: error.details.map((d) => d.message),
+//       });
+//     }
 
-    const categorie = await getOneCategorie(req.params.id);
+//     const categorie = await getOneCategorie(req.params.id);
 
-    if (!categorie) {
-      return res.status(404).json({
-        message: "Catégorie introuvable",
-      });
-    }
+//     if (!categorie) {
+//       return res.status(404).json({
+//         message: "Catégorie introuvable",
+//       });
+//     }
 
-    res.status(200).json({ data: categorie });
-  } catch (error) {
-    res.status(500).json({
-      message: "Erreur lors de la récupération de la catégorie",
-      error: error.message,
-    });
-  }
-};
+//     res.status(200).json({ data: categorie });
+//   } catch (error) {
+//     res.status(500).json({
+//       message: "Erreur lors de la récupération de la catégorie",
+//       error: error.message,
+//     });
+//   }
+// };
 
 /**
  * Mettre à jour une catégorie
