@@ -15,12 +15,11 @@ export default function Navbar() {
 
   const dispatch = useDispatch();
   const { theme } = useSelector((state) => state.theme);
-  console.log("Current theme:", theme);
 
   const navLinks = [
     { name: "Acceuil", href: "/home#" },
     { name: "Services", href: "/home#features" },
-    { name: "Contact", href: "/home#pricing" },
+    { name: "Contact", href: "/contact" },
     { name: "FAQ", href: "/home#faq" },
   ];
 
@@ -31,8 +30,11 @@ export default function Navbar() {
       animate={{ y: 0, opacity: 1 }}
       viewport={{ once: true }}
       transition={{ type: "spring", stiffness: 250, damping: 70, mass: 1 }}
+     
     >
-      <div className="max-w-6xl mx-auto flex items-center justify-between dark:bg-black/50 backdrop-blur-md border border-black/4 dark:border-white/4 rounded-2xl p-3">
+      <div className="max-w-6xl mx-auto flex items-center justify-between dark:bg-black/50 backdrop-blur-md border border-black/4 dark:border-white/4 rounded-2xl p-3"
+       id="navbar"
+      >
         
         <div className="flex  items-center select-none">
         <Link to="/home">
@@ -66,16 +68,21 @@ export default function Navbar() {
               <SunIcon className="size-4 text-yellow-400" />
             )}
           </button>
-          <button className="text-sm text-black font-medium dark:text-gray-300 dark:hover:text-white transition max-sm:hidden">
-            S'inscrire
-          </button>
-          <PrimaryButton className="max-sm:text-xs hidden sm:inline-block text-white bg-slate-900">
-            Se connecter
-          </PrimaryButton>
+          <Link to={'/inscription'}>
+              <button className="text-sm text-black font-medium dark:text-gray-300 dark:hover:text-white transition max-sm:hidden">
+              S'inscrire
+            </button>
+          </Link>
+          <Link to={'/connexion'}>
+              <PrimaryButton className="max-sm:text-xs hidden sm:inline-block text-white bg-slate-900">
+              Se connecter
+            </PrimaryButton>
+          </Link>
+          
         </div>
 
         <button onClick={() => setIsOpen(!isOpen)} className="md:hidden">
-          <MenuIcon className="size-6" />
+          <MenuIcon className="size-6 text-black dark:text-white" />
         </button>
       </div>
       <div
@@ -84,20 +91,23 @@ export default function Navbar() {
         }`}
       >
         {navLinks.map((link) => (
-          <Link key={link.name} to={link.href} onClick={() => setIsOpen(false)} className="relative px-3 py-1 font-medium text-gray-700 dark:text-gray-300 transition-all duration-300 ease-out hover:text-[#f26f0e] hover:font-semibold focus:outline-none focus:text-[#f26f0e] focus:font-semibold after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-[#f26f0e] after:transition-all after:duration-300 hover:after:w-full focus:after:w-full">
+          <Link key={link.name} to={link.href} onClick={() => setIsOpen(false)} className="relative px-3 py-1 font-medium text-[#0d2e55] dark:text-gray-300 transition-all duration-300 ease-out hover:text-[#f26f0e] hover:font-semibold focus:outline-none focus:text-[#f26f0e] focus:font-semibold after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-[#f26f0e] after:transition-all after:duration-300 hover:after:w-full focus:after:w-full">
             {link.name}
           </Link>
         ))}
-
-        <button
-          onClick={() => setIsOpen(false)}
-          className="font-medium text-gray-300 hover:text-white transition"
-        >
-          S'inscrire
-        </button>
+         <Link to={'/inscription'}>  
+              <button
+                onClick={() => setIsOpen(false)}
+                className="font-medium text-gray-300 hover:text-white transition"
+              >
+                S'inscrire
+             </button>         
+         </Link>
+        <Link to={'/connexion'}> 
         <PrimaryButton onClick={() => setIsOpen(false)} className={'text-white'}>
           Se connecter
         </PrimaryButton>
+        </Link>
 
         <button
           onClick={() => setIsOpen(false)}

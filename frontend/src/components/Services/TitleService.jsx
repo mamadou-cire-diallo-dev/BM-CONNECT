@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-export default function TitleService({ title, heading, description }) {
+export default function TitleService({ title, heading, description,textHead }) {
 
     return (
         <div className="text-center mb-16">
@@ -16,7 +16,7 @@ export default function TitleService({ title, heading, description }) {
                 </motion.p>
             )}
             {heading && (
-                <motion.h2 className="text-xl md:text-2xl text-gray-900 text-left dark:text-white font-semibold"
+                <motion.h2 className={`text-xl md:text-2xl text-gray-900 ${textHead} dark:text-white font-semibold`}
                     initial={{ y: 60, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true }}

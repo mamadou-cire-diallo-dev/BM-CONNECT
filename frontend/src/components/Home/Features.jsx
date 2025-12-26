@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 export default function Features() {
     const refs = useRef([]);
     return (
-        <section id="features" className="py-20 2xl:py-32 text-black">
+        <section id="features" className="py-20 2xl:py-32 text-black ">
             <div className="max-w-6xl mx-auto px-4">
 
                 <Title
@@ -47,15 +47,15 @@ export default function Features() {
                             <ul className='flex flex-col gap-4 my-5'>
                                 {feature.detail.map((detail,i) => (
                                     <li key={i} className='flex gap-2'> 
-                                    <CheckIcon className='text-[#f26f0e]'> </CheckIcon>
-                                       <span className='text-sm'>
+                                    <CheckIcon className='text-[#f26f0e] '> </CheckIcon>
+                                       <span className='text-sm dark:text-white'>
                                         {detail}
                                         </span> 
                                     </li>
                                 ))}
                             </ul>
                             <PrimaryButton className={'text-white hover:translate-x-2 '}>
-                                <Link to={'/services'} className='flex  gap-2 items-center'> 
+                                <Link to={'/services#formulaire'} className='flex  gap-2 items-center'> 
                                 Reserver maintenant 
                                 <ArrowRightIcon className="size-4 hover:translate-x-2 transform transition duration-300 ease-in-out hover:scale-110" /> 
                                  </Link>

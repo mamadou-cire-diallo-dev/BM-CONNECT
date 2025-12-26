@@ -1,4 +1,4 @@
-import { UploadIcon, VideoIcon, ZapIcon,SearchCheck, Droplets, Snowflake, Plug2, Fan, SearchCode     , Filter        , CalendarClock  , MapPin , Navigation,ShieldCheck  ,Star , MessageSquare   } from 'lucide-react';
+import { User, Store, Wrench, CheckCircle,SearchCheck, Droplets, Snowflake, Plug2, Fan, SearchCode, Phone, Filter        , CalendarClock  , MapPin , Navigation,ShieldCheck  ,Star , MessageSquare, Clock   } from 'lucide-react';
 
 export const featuresData = [
     {
@@ -43,7 +43,23 @@ export const trouveServicesData = [
         icon: <Filter className="w-6 h-6 text-[#f26f0e]" />,
     }
 ]
-
+export const heureOuvertureData = [
+    {
+        icon: <CheckCircle className="w-4 h-4 text-[#f26f0e]" />, 
+        jours:'Lundi - Vendredi',
+        heure: '8h00 - 18h00',
+    },
+    {
+        icon: <CheckCircle className="w-4 h-4 text-[#f26f0e]" />, 
+        jours:'Samedi',
+        heure: '9h00 - 16h00',
+    },
+    {
+        icon: <Clock className="w-4 h-4 text-gray-500" />, 
+        jours:'Dimanche',
+        heure: 'Fermé',
+    },
+]
 export const prestatairesDispo = [
     {
         prenom:'Mouctar',
@@ -158,6 +174,63 @@ export const ValeurData = [
     }
 ];
 
+export const optionsConnexion = [
+    {
+        icon: <User className="w-10 h-10 text-[#f26f0e] " />,
+        title: 'Client',
+        type:'Client',
+        desc:'Réserver des services de maintenance',
+        codeCouleur:'#0F172A',
+        degrade:'#3f7accff'
+    },
+    {
+        icon: <Wrench className="w-10 h-10 text-[#f26f0e] " />,
+        title: 'Prestataire',
+        type:'Prestataire',
+        desc: ' Offrir des services de maintenance ',
+        codeCouleur:'#0F172A',
+        degrade:'#3f7accff'
+    },
+    {
+        icon: <Store className="w-10 h-10 text-[#f26f0e] " />,
+        title: 'Vendeur',
+        type:'Vendeur',
+        desc: "Vendre des pièces détachées",
+        codeCouleur:'#0F172A',
+        degrade:'#3f7accff'
+    },
+    
+];
+
+export const contactData = [
+     {
+        icon: <Phone className="w-6 h-6 text-white" />,
+        title: 'Téléphone',
+        list:['+224 621 123 456',' +224 657 789 012'],
+        textAccroche:'Lun - Sam: 8h - 18h',
+        codeCouleur:'#0EA5E9',
+        degrade:'#7DD3FC'
+    },
+   {
+        icon: <MessageSquare className="w-6 h-6 text-white" />,
+        title: 'Email',
+        list:['contact@maintenancegn.com','support@maintenancegn.com'],
+        textAccroche:'Réponse sous 24h',
+        codeCouleur:'#0EA5E9',
+        degrade:'#7DD3FC'
+    },
+    {
+        icon: <MapPin className="w-6 h-6 text-white" />,
+        title: 'Adresse',
+        list:['Immeuble Kaloum Center','Avenue de la République','Conakry, Guinée'],
+        textAccroche:'',
+        codeCouleur:'#16A34A',
+        degrade:'#4ADE80'
+    },
+     
+];
+
+
 export const plansData = [
     {
         id: 'starter',
@@ -203,6 +276,28 @@ export const plansData = [
         ]
     }
 ];
+
+export const questionsData = [
+    {
+        question: '• Comment devenir prestataire ?',
+        answer: 'Vous choisissez le type de service (plomberie, électricité, climatisation), indiquez votre adresse et l’horaire souhaité, puis confirmez la réservation et l’acompte directement dans l’application.'
+    },
+    {
+        question: '• Quels modes de paiement acceptez-vous ?',
+        answer: 'Vous payez uniquement via la plateforme (Mobile Money ou carte). Le montant est sécurisé jusqu’à la fin de l’intervention, puis libéré au prestataire après votre validation.'
+    },
+    {
+        question: '• Comment annuler une réservation ?',
+        answer: 'Vous avez jusqu’à 72 heures pour signaler un problème sur l’équipement réparé. Un nouveau créneau est automatiquement réservé avec le même prestataire (ou un autre, selon le cas).'
+
+    },
+    {
+        question: '• Où sont disponibles vos services ?',
+        answer: 'Les techniciens sont vérifiés (identité, compétences), puis évalués en continu grâce aux notes et avis des clients après chaque intervention.'
+    }
+];
+
+
 
 export const faqData = [
     {

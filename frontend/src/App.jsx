@@ -6,8 +6,12 @@ import Projects from "./pages/Services";
 import Team from "./pages/Payement";
 
 import ServiceDetails from "./pages/ServiceDetails";
+
 import Home from "./pages/Home/Home";
 import Services from "./pages/Services/Services";
+import Contact from "./pages/Contact/Contact.jsx";
+import Inscription from "./pages/Connexion/Inscription.jsx";
+import Connexion from "./pages/Connexion/Connexion.jsx";
 
 // clent import
 import DashboardClient from "./pages/Client/Dashboard";
@@ -22,6 +26,9 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/services" element={<Services />} />
+        <Route path="/contact" element={<Contact />}>  </Route>
+        <Route path="/inscription" element={<Inscription />}>  </Route>
+        <Route path="/connexion" element={<Connexion />}>  </Route>
 
         {/* client Routes */}
         <Route path="/client" element={<LayoutClient />}>

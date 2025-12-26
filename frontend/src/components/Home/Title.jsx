@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-export default function Title({ title, heading, description }) {
+export default function Title({ title, heading, description, id }) {
 
     return (
         <div className="text-center mb-16">

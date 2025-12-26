@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRef } from 'react';
 import { XIcon, MapPin, CheckIcon, Star, Phone,
-  CheckCircle, Clock   ,
+  CheckCircle, Clock, MessageSquare,
   XCircle } from 'lucide-react';
 import { PrimaryButton,PrimaryButtonOrange } from '../../Home/Buttons';
 import { motion } from 'framer-motion';
@@ -29,11 +29,11 @@ function PrestatairesNonDispos({prestataire,i}) {
                         >
                             <div className={`w-full h-max rounded-lg text-balck/3 dark:text-white  flex flex-col dark:bg-gray-900/20 flex items-center justify-center mb-2`}
                             >
-                               <div className="flex gap-4 w-full px-4 pt-2">
+                               <div className="flex  gap-4 w-full px-4 pt-2">
                                     <img src={prestataire.image} className='w-24 h-20 rounded rounded-lg' alt="avatar" />
                                     <div className='flex flex-col gap-2'>
                                         <span >{prestataire.prenom}  {prestataire.nom} </span>
-                                        <ul className='flex gap-2 text-sm'> 
+                                        <ul className='flex md:flex-wrap flex-no-wrap gap-2 text-sm'> 
                                             {prestataire.fonctions.map((fonction,i)=> (
                                             <li key={i}> 
                                                 {fonction}
@@ -53,7 +53,7 @@ function PrestatairesNonDispos({prestataire,i}) {
                                </div>
                                <div className='px-4 w-full text-sm flex flex-col gap-2'>
                                          <span>
-                                            <MapPin className='w-4 h-4 text-green-500 inline-block mr-1 '> </MapPin> 
+                                            <MapPin className='w-4 h-4 text-[#0d2e55] inline-block mr-1  mb-1'> </MapPin> 
                                              {prestataire.lieu} <div className='size-2 bg-gray-500 rounded rounded-full inline-block mx-2'></div>  2.3 km
                                          </span>
                                    
@@ -68,11 +68,11 @@ function PrestatairesNonDispos({prestataire,i}) {
                                </div> 
                                <div className='w-full px-4'>
                                     <div className='text-left '> 
-                                        A partir de <span className='text-green-500 text-xl ml-2'> {prestataire.prix_diagnostic} GNF  </span> 
+                                        A partir de <span className='text-[#0d2e55] dark:text-white text-xl ml-2'> {prestataire.prix_diagnostic} GNF  </span> 
                                     </div>
                                     <div className="flex gap-2 my-6  justify-between">
                                         <PrimaryButtonOrange className={'py-4 rounded-lg bg-none text-gray-500 dark:text-white w-40 border-2 dark:border-5 border border-gray-500 '}>
-                                            <Phone> </Phone>
+                                            <MessageSquare> </MessageSquare>
                                         </PrimaryButtonOrange >
                                         <PrimaryButton className={'text-white py-4 w-40 bg-green-500 rounded-lg'}>
                                             Réserver

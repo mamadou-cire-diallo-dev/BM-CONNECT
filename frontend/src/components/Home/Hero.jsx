@@ -1,5 +1,6 @@
 import { ArrowRightIcon, PlayIcon, ZapIcon, CheckIcon } from 'lucide-react';
 import { PrimaryButton, GhostButton, DisponibleButton } from './Buttons';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import mKourouma from '../../assets/imagesMaintenancier/mKourouma.webp'
 import mCisse from '../../assets/imagesMaintenancier/mCisse.jpg'
@@ -35,7 +36,7 @@ export default function Hero() {
     ]
     return (
         <>
-            <section id="home" className="relative z-10 text-black">
+            <section id="home" className="relative z-10 text-black dark:text-white">
                 <div className="max-w-6xl mx-auto px-4 min-h-screen max-md:w-screen max-md:overflow-hidden pt-32 md:pt-26 flex items-center justify-center">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                         <div className="text-left">
@@ -89,12 +90,12 @@ export default function Hero() {
                                 viewport={{ once: true }}
                                 transition={{ type: "spring", stiffness: 250, damping: 70, mass: 1, delay: 0.3 }}
                             >
-                                <a href="/" className="w-full sm:w-auto text-white">
-                                    <PrimaryButton className="max-sm:w-full py-3 px-7 hover:translate-x-2 transform transition duration-300 ease-in-out">
-                                       Commencez maintenant
+                                    <PrimaryButton className="max-sm:w-full text-white py-3 px-7 hover:translate-x-2 transform transition duration-300 ease-in-out">
+                                      <Link to={'/services'}>
+                                      Commencez maintenant
+                                      </Link>                                       
                                         <ArrowRightIcon className="size-4 hover:translate-x-2 transform transition duration-300 ease-in-out" />
                                     </PrimaryButton>
-                                </a>
 
                                 <GhostButton className="max-sm:w-ful text-black/80 dark:text-white max-sm:justify-center py-3 px-5">
                                     <PlayIcon className="size-4" />
