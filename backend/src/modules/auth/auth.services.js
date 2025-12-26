@@ -366,9 +366,8 @@ export async function login(req, { identifier, motDePasse }) {
       telephone: user.telephone,
       role: user.role,
     },
-    token: accessToken,        // compat (ancien)
     accessToken,
-    refreshToken,
+    refreshToken
   };
 
 
@@ -444,9 +443,8 @@ export async function verifyLogin2fa(req, { challengeId, code, rememberDevice = 
   const refreshToken = await createSessionForUser(row.userId, req);
 
   return {
-    token: accessToken,       // compat
     accessToken,
-    refreshToken,
+    refreshToken, 
     ...(rememberDevice && deviceToken ? { deviceToken } : {}),
   };
 
@@ -645,7 +643,7 @@ export async function refresh(req) {
 
   const accessToken = signAccessToken({ sub: session.userId, role: session.utilisateur.role });
 
-  return { token: accessToken, accessToken, newRefreshToken };
+  return { accessToken, refreshToken: newRefreshToken };
 }
 
 
@@ -668,4 +666,36 @@ export async function logout(req) {
   });
 
   return { message: "Session révoquée. Déconnecté." };
+}
+
+
+export async function logoutAll(userId) {
+  const now = new Date();
+
+  // 1) Révoquer toutes les sessions (refresh tokens)
+  const sessions = await prisma.session.updateMany({
+    where: {
+      userId,
+      revokedAt: null,
+      expiresAt: { gt: now },
+    },
+    data: { revokedAt: now },
+  });
+
+  // 2) (Optionnel mais recommandé) Révoquer tous les trusted devices
+  // -> forcera une 2FA au prochain login sur n'importe quel device
+  const devices = await prisma.trustedDevice.updateMany({
+    where: {
+      userId,
+      revokedAt: null,
+      expiresAt: { gt: now },
+    },
+    data: { revokedAt: now },
+  });
+
+  return {
+    message: "Déconnexion globale effectuée.",
+    revokedSessions: sessions.count,
+    revokedDevices: devices.count,
+  };
 }
