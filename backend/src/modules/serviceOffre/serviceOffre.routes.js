@@ -3,6 +3,7 @@ import {
   createServiceOffreController,
   getAllMyServiceOffresController,
   getOneMyServiceOffreController,
+  getAllServiceOffresController,
   updateServiceOffreController,
   deleteServiceOffreController,
 } from "./serviceOffre.controllers.js";
@@ -10,8 +11,9 @@ import {
 const router = express.Router();
 
 router.post("/", createServiceOffreController);
-router.get("/", getAllMyServiceOffresController);
-router.get("/:id", getOneMyServiceOffreController);
+router.get("/all", getAllServiceOffresController);
+router.get("/prestataire", getAllMyServiceOffresController);
+router.get("/prestataire/:id", getOneMyServiceOffreController);
 router.put("/:id", updateServiceOffreController);
 router.delete("/:id", deleteServiceOffreController);
 

@@ -2,6 +2,7 @@ import {
   createServiceOffre,
   getAllServiceOffresForPrestataire,
   getOneServiceOffreForPrestataire,
+  getAllServiceOffres,
   updateServiceOffre,
   deleteServiceOffre,
 } from "./serviceOffre.services.js";
@@ -40,12 +41,25 @@ export const createServiceOffreController = async (req, res) => {
   }
 };
 
+export const getAllServiceOffresController = async (req, res) => {
+    try {
+        const offres = await getAllServiceOffres();
+        res.status(200).json({ data: offres });
+    } catch (error) {
+        res.status(500).json({
+            message: "Erreur lors de la récupération des offres de service",
+            error: error.message,
+        });
+    }
+}
+
 /**
  * Afficher toutes les offres du prestataire
  */
 export const getAllMyServiceOffresController = async (req, res) => {
   try {
-    const prestataireId = req.user.id; // ID récupéré depuis JWT ou session
+    // const prestataireId = req.user.id; // ID récupéré depuis JWT ou session
+    const prestataireId = "0209bbef-a386-4cb8-91fb-fdadf6142182"; // A remplacer par l'ID dynamique
     const offres = await getAllServiceOffresForPrestataire(prestataireId);
     res.json({ message: "Mes offres de services", data: offres });
   } catch (error) {
@@ -58,11 +72,12 @@ export const getAllMyServiceOffresController = async (req, res) => {
 
 
 /**
- * Rechercher une offre spécifique du prestataire
+ * Rechercher un service offre spécifique du prestataire
  */
 export const getOneMyServiceOffreController = async (req, res) => {
   try {
-    const prestataireId = req.user.id; // ID du prestataire connecté
+    // const prestataireId = req.user.id; // ID du prestataire connecté
+    const prestataireId = "0209bbef-a386-4cb8-91fb-fdadf6142182"; // A remplacer par l'ID dynamique
     const { id } = req.params;
     const offre = await getOneServiceOffreForPrestataire(id, prestataireId);
 

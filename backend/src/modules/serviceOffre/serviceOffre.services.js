@@ -7,6 +7,11 @@ export const createServiceOffre = async (data) => {
   });
 };
 
+//Afficher toutes les offres de service
+
+export const getAllServiceOffres = async () => {
+    return await prisma.serviceOffre.findMany({});
+};
 
 /**
  * Récupérer toutes les offres d'un prestataire
@@ -19,12 +24,7 @@ export const getAllServiceOffresForPrestataire = async (prestataireId) => {
     },
     orderBy: {
       createdAt: "desc",
-    },
-    include: {
-      categorie: {
-        where: { deletedAt: null },
-      },
-    },
+    }
   });
 };
 
@@ -39,11 +39,11 @@ export const getOneServiceOffreForPrestataire = async (id, prestataireId) => {
       prestataireId,
       deletedAt: null,
     },
-    include: {
-      categorie: {
-        where: { deletedAt: null },
-      },
-    },
+    // include: {
+    //   categorie: {
+    //     where: { deletedAt: null },
+    //   },
+    // },
   });
 };
 
@@ -64,3 +64,4 @@ export const deleteServiceOffre = async (id) => {
     },
   });
 };
+
