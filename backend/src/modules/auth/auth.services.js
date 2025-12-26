@@ -699,3 +699,122 @@ export async function logoutAll(userId) {
     revokedDevices: devices.count,
   };
 }
+
+
+// ===== PASSWORD RESET =====
+
+export async function forgotPassword({ email }) {
+  const user = await prisma.utilisateur.findUnique({
+    where: { email },
+    select: { id: true, email: true },
+  });
+
+  // Anti-enum: même message si email inexistant
+  if (!user) return { message: "Si cet email existe, un code a été envoyé." };
+
+  // Cooldown anti-spam
+  await ensureResendCooldown(prisma, user.id, "EMAIL", "PASSWORD_RESET");
+
+  // Invalider anciens codes non utilisés
+  await prisma.verificationCode.updateMany({
+    where: { userId: user.id, type: "EMAIL", purpose: "PASSWORD_RESET", usedAt: null },
+    data: { usedAt: new Date() },
+  });
+
+  const code = generateOtp6();
+
+  await prisma.verificationCode.create({
+    data: {
+      userId: user.id,
+      type: "EMAIL",
+      purpose: "PASSWORD_RESET",
+      codeHash: hashOtp(code),
+      expiresAt: new Date(Date.now() + OTP_TTL_MS),
+      // attempts default 0
+    },
+  });
+
+  await sendOtpEmail({ to: user.email, code });
+
+  return { message: "Si cet email existe, un code a été envoyé." };
+}
+
+export async function resetPassword({ email, code, newPassword }) {
+  const user = await prisma.utilisateur.findUnique({
+    where: { email },
+    select: { id: true },
+  });
+
+  // Anti-enum
+  if (!user) return { message: "Code invalide ou expiré." };
+
+  const row = await prisma.verificationCode.findFirst({
+    where: {
+      userId: user.id,
+      type: "EMAIL",
+      purpose: "PASSWORD_RESET",
+      usedAt: null,
+    },
+    orderBy: { createdAt: "desc" },
+    select: { id: true, codeHash: true, attempts: true, expiresAt: true, usedAt: true },
+  });
+
+  await verifyOtpOrThrow(prisma, row, code);
+
+  const motDePasseHash = await hashPassword(newPassword);
+  const now = new Date();
+
+  await prisma.$transaction(async (tx) => {
+    // Marquer OTP utilisé
+    await tx.verificationCode.update({
+      where: { id: row.id },
+      data: { usedAt: now },
+    });
+
+    // Changer password
+    await tx.utilisateur.update({
+      where: { id: user.id },
+      data: { motDePasseHash },
+    });
+
+    // Révoquer sessions + trusted devices
+    await tx.session.updateMany({
+      where: { userId: user.id, revokedAt: null },
+      data: { revokedAt: now },
+    });
+
+    await tx.trustedDevice.updateMany({
+      where: { userId: user.id, revokedAt: null },
+      data: { revokedAt: now },
+    });
+  });
+
+  return { message: "Mot de passe mis à jour. Reconnecte-toi." };
+}
+
+export async function changePassword(userId, { currentPassword, newPassword }) {
+  const user = await prisma.utilisateur.findUnique({
+    where: { id: userId },
+    select: { id: true, motDePasseHash: true },
+  });
+
+  if (!user) throw Object.assign(new Error("Utilisateur introuvable"), { status: 404 });
+
+  const ok = await verifyPassword(currentPassword, user.motDePasseHash);
+  if (!ok) throw Object.assign(new Error("Mot de passe actuel incorrect"), { status: 401 });
+
+  const motDePasseHash = await hashPassword(newPassword);
+
+  await prisma.utilisateur.update({
+    where: { id: userId },
+    data: { motDePasseHash },
+  });
+
+  // Optionnel (recommandé): révoquer toutes les sessions sauf celle courante si tu veux
+  await prisma.session.updateMany({
+    where: { userId, revokedAt: null },
+    data: { revokedAt: new Date() },
+  });
+
+  return { message: "Mot de passe modifié avec succès." };
+}

@@ -1,5 +1,6 @@
 import * as authServices from "./auth.services.js";
 import { env } from "../../config/env.js";
+import { setCsrf } from "../../middlewares/csrf.js";
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
@@ -47,7 +48,9 @@ export async function login(req, res, next) {
 
     // ne pas exposer refreshToken
     const { refreshToken, ...safe } = data;
-    return res.json(safe);
+    // ...
+    const csrfToken = setCsrf(res);
+    return res.json({ ...safe, csrfToken });
   } catch (e) {
     next(e);
   }
@@ -60,7 +63,9 @@ export async function verify2fa(req, res, next) {
     res.cookie("refresh_token", data.refreshToken, COOKIE_OPTIONS);
 
     const { refreshToken, ...safe } = data;
-    return res.json(safe);
+
+    const csrfToken = setCsrf(res);
+    return res.json({ ...safe, csrfToken });
   } catch (e) {
     next(e);
   }
@@ -70,11 +75,14 @@ export async function refresh(req, res, next) {
   try {
     const data = await authServices.refresh(req);
 
-    // ✅ FIX: COOKIE_OPTIONS (pas REFRESH_COOKIE_OPTIONS)
+    //  FIX: COOKIE_OPTIONS (pas REFRESH_COOKIE_OPTIONS)
     res.cookie("refresh_token", data.refreshToken, COOKIE_OPTIONS);
 
     // réponse clean: uniquement accessToken
-    return res.json({ accessToken: data.accessToken });
+    // ...
+    const csrfToken = setCsrf(res);
+
+    return res.json({ accessToken: data.accessToken, csrfToken });
   } catch (e) {
     next(e);
   }
@@ -143,7 +151,10 @@ export async function logoutDevice(req, res, next) {
 
 export async function deleteDevice(req, res, next) {
   try {
-    const data = await authServices.revokeDeviceById(req.user.sub, req.params.id);
+    const data = await authServices.revokeDeviceById(
+      req.user.sub,
+      req.params.id
+    );
     return res.json(data);
   } catch (e) {
     next(e);
@@ -157,4 +168,25 @@ export async function deleteAllDevices(req, res, next) {
   } catch (e) {
     next(e);
   }
+}
+
+export async function forgotPassword(req, res, next) {
+  try {
+    const data = await authServices.forgotPassword(req.body); // {email}
+    return res.json(data);
+  } catch (e) { next(e); }
+}
+
+export async function resetPassword(req, res, next) {
+  try {
+    const data = await authServices.resetPassword(req.body); // {email, code, newPassword}
+    return res.json(data);
+  } catch (e) { next(e); }
+}
+
+export async function changePassword(req, res, next) {
+  try {
+    const data = await authServices.changePassword(req.user.sub, req.body);
+    return res.json(data);
+  } catch (e) { next(e); }
 }

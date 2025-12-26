@@ -36,6 +36,7 @@ enum VerificationPurpose {
   CONTACT_EMAIL
   CONTACT_PHONE
   LOGIN_2FA
+  PASSWORD_RESET
 }
 
 model Utilisateur {
@@ -330,6 +331,8 @@ model VerificationCode {
   codeHash  String
   expiresAt DateTime
   usedAt    DateTime?
+
+  attempts  Int @default(0) 
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
