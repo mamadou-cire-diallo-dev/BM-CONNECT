@@ -818,3 +818,40 @@ export async function changePassword(userId, { currentPassword, newPassword }) {
 
   return { message: "Mot de passe modifié avec succès." };
 }
+
+// ====== INTERNAL HELPERS ======
+
+async function ensureResendCooldown(tx, userId, type, purpose) {
+  const lastCode = await tx.verificationCode.findFirst({
+    where: { userId, type, purpose },
+    orderBy: { createdAt: "desc" },
+  });
+
+  if (lastCode) {
+    const elapsed = Date.now() - new Date(lastCode.createdAt).getTime();
+    if (elapsed < 60 * 1000) { // 1 minute cooldown
+       throw Object.assign(new Error("Veuillez patienter avant de demander un nouveau code."), { status: 429 });
+    }
+  }
+}
+
+async function verifyOtpOrThrow(tx, row, codeCandidate) {
+  if (!row) throw Object.assign(new Error("Code introuvable ou expiré"), { status: 400 });
+  if (row.usedAt) throw Object.assign(new Error("Code déjà utilisé"), { status: 400 });
+  if (row.expiresAt < new Date()) throw Object.assign(new Error("Code expiré"), { status: 400 });
+
+  // check attempts
+  if (row.attempts >= 3) {
+     throw Object.assign(new Error("Trop de tentatives. Demandez un nouveau code."), { status: 429 });
+  }
+
+  if (row.codeHash !== hashOtp(codeCandidate)) {
+    // increment attempts
+    await tx.verificationCode.update({
+        where: { id: row.id },
+        data: { attempts: { increment: 1 } }
+    });
+    throw Object.assign(new Error("Code incorrect"), { status: 400 });
+  }
+}
+

@@ -29,6 +29,16 @@ app.use(
 // API
 app.use("/api", apiRoutes);
 
+// Swagger
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './config/swagger.js';
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.get('/api-docs.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+
 // 404
 app.use((req, res) => res.status(404).json({ message: "Route not found" }));
 
