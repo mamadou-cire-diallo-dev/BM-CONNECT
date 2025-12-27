@@ -6,7 +6,7 @@ import { ArrowLeft } from 'lucide-react'
 export default function TitleConnexion({texte,taille,className, btnAcceuil, ...props }) {
   return (
     <div className={`${className}`} {...props}>
-       <div className=" mb-5 select-none">
+       <div className=" mb-3  select-none">
         <Link to="" className='flex flex-col items-center'>
           <LogoSvg> </LogoSvg>
           <span className={` text-[#0d2e55] font-semibold   text-${taille}  tracking-tight leading-none top-[2px]  `}>

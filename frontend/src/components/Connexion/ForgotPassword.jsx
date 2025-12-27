@@ -8,7 +8,7 @@ import {toast} from 'react-hot-toast'
 import { useEffect } from 'react'
 import { PrimaryButton } from '../../components/Home/Buttons'
 
-export default function Connexion() {
+export default function ForgotPassworde() {
 
      // la gestion du formulaire avec useForm
     const {handleSubmit, register, watch,formState: {errors} } = useForm()
@@ -31,20 +31,18 @@ export default function Connexion() {
                 // enregistrement de ces infos dans le local storage
                 localStorage.setItem("utilisateur",JSON.stringify(data[0]))
                 // renvoit le user sur l'acceuil
-                navigate("/")
+                navigate("/renitialize")
                 console.log(data);
-                
-                toast.success('Connexion réussie')
             } else {
                 toast.error('vos identifiants sont incorrectes !')
             }       
     }
     
   return (
-    <div className=' flex items-center bg-linear-to-br from-[#3f7accff] to-[#0F172A] pt-5 pb-10  h-max w-full'>
+    <div className=' flex items-center bg-linear-to-br from-[#3f7accff] to-[#0F172A] pt-5 pb-10  h-screen w-full'>
         <div className="rounded md:w-[500px] w-max m-auto bg-white rounded-xl h-max px-4 py-2 border">
         <div className=''>
-          <Link to={'/home'} className={`text-left text-gray-500  `}>
+          <Link to={'/connexion'} className={`text-left text-gray-500  `}>
             <ArrowLeft className={`inline-block mr-2`}> </ArrowLeft>           
             <span className=''> </span>
         </Link>
@@ -54,7 +52,7 @@ export default function Connexion() {
             taille="3xl"
             />
             <span className='text-gray-700 md:ml-35 ml-15'> Accedez à votre compte</span>
-            <form onSubmit={handleSubmit(onSubmit)} className='mt-4 flex flex-col px-4 py-2 ' >
+            <form onSubmit={handleSubmit(onSubmit)} className='mt-4 flex flex-col px-4 gap-4 py-2 ' >
                 <div className='  flex flex-col text-black gap-4  '>
                     <label htmlFor="id_for">Téléphone / Email</label>                  
                     <input
@@ -97,47 +95,15 @@ export default function Connexion() {
                         )}
                     </span>
                 </div>
-                <div className=' flex flex-col text-black gap-4 '>
-                    <label htmlFor="motpass">Mot de passe </label>                  
-                    <input
-                        type="password"
-                        name="motDePass"
-                        autoComplete="username"
-                        inputMode="email"
-                        id="motpass"
-                        {...register('passwordUser', {required:"Veuillez saisir un mot de pass",  minLength : {value:6, message:"le mot de pass est obligatoire" }})}
-                        className='bg-black/3 w-full  border border-black/6 flex rounded rounded-xl p-2 flex-col transition-all duration-300 ease-out
-
-                        hover:border-[#f26f0e]/60
-                        hover:bg-black/5 dark:hover:bg-white/5
-
-                        focus:outline-none
-                        focus:border-[#f26f0e]
-                        focus:ring-2 focus:ring-[#f26f0e]/30
-                        focus:ring-offset-0
-
-                        focus:shadow-[0_0_0_1px_rgba(242,111,14,0.2)]'
-                    />
-                    <span className="text-red-500 ">
-                        {errors.motDePass && (
-                        <p className="text-red-500 text-sm">
-                            {errors.motDePass.message}
-                        </p>
-                        )}
-                    </span>
-                </div>
                 <PrimaryButton type="submit" className="w-full rounded-xl p-2 text-white ">
-                    Se connecter
+                    Envoyer
                 </PrimaryButton>
             </form>
             <div className='flex flex-col items-center py-5 pt-3'>
-                <Link to={'/forgotPassword'} className='relative px-3 text-xs  hover:font-medium text-[#f26f0e] transition-all duration-300 ease-out hover:text-[#f26f0e] hover:font-semibold focus:outline-none focus:text-[#f26f0e] focus:font-semibold after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-[#f26f0e] after:transition-all after:duration-300 hover:after:w-full focus:after:w-full'>
-                    Mot de pass oublié ?
-                </Link>
                
                 <div className='text-gray-500 mt-2'> 
-                    Pas encore de compte ?  <Link to={'/inscription'} className='relative px-3  font-medium text-[#f26f0e] transition-all duration-300 ease-out hover:text-[#f26f0e] hover:font-semibold focus:outline-none focus:text-[#f26f0e] focus:font-semibold after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-[#f26f0e] after:transition-all after:duration-300 hover:after:w-full focus:after:w-full'>
-                                                Créer un compte
+                       <Link to={'/inscription'} className='relative px-3  font-medium text-[#f26f0e] transition-all duration-300 ease-out hover:text-[#f26f0e] hover:font-semibold focus:outline-none focus:text-[#f26f0e] focus:font-semibold after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-[#f26f0e] after:transition-all after:duration-300 hover:after:w-full focus:after:w-full'>
+                                            Créer un compte ?
                                             </Link>
                 </div>
             </div>

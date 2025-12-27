@@ -12,6 +12,9 @@ import Services from "./pages/Services/Services";
 import Contact from "./pages/Contact/Contact.jsx";
 import Inscription from "./pages/Connexion/Inscription.jsx";
 import Connexion from "./pages/Connexion/Connexion.jsx";
+import ForgotPassword from "./pages/ForgotPassword.jsx";
+import Renitialize from "./pages/Connexion/Renitialize.jsx";
+import NewPassword from "./pages/Connexion/newPassword.jsx";
 
 // clent import
 import DashboardClient from "./pages/Client/Dashboard";
@@ -29,6 +32,10 @@ const App = () => {
         <Route path="/contact" element={<Contact />}>  </Route>
         <Route path="/inscription" element={<Inscription />}>  </Route>
         <Route path="/connexion" element={<Connexion />}>  </Route>
+        <Route path="/forgotPassword" element={<ForgotPassword />}>  </Route>
+        <Route path="/renitialize" element={<Renitialize />}>  </Route>
+        <Route path="/newPassword" element={<NewPassword />}>  </Route>
+
 
         {/* client Routes */}
         <Route path="/client" element={<LayoutClient />}>

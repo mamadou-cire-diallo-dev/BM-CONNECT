@@ -10,7 +10,15 @@ export default function OptionConnexion() {
                     {optionsConnexion.map((option, i) => (
                        <Link to={`/inscription${option.type}`}  key={i}>
                              <div
-                            className="rounded-2xl cursor-pointer p-6 flex flex-col items-center  h-60 bg-gray-200 dark:bg-white/3 border border-black/6 dark:border-white/6"
+                            className="rounded-2xl cursor-pointer p-6 flex flex-col items-center  h-60 bg-gray-200 dark:bg-white/3 border border-black/6 dark:border-white/6
+                            transition-all duration-300 ease-out
+
+                            hover:-translate-y-2
+                            hover:shadow-xl hover:shadow-black/10 dark:hover:shadow-black/40
+
+                            focus-within:border-[#f26f0e]
+                            active:border-[#f26f0e]
+                            "
                            
                         >
                             <div className={`w-20 h-20 rounded-lg text-[#f26f0e] text-xl dark:bg-violet-900/20 flex items-center justify-center mb-4`}

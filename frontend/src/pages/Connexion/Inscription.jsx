@@ -22,7 +22,7 @@ export default function Inscription() {
             <span className='mt-5'> Acceuil</span>
         </Link>
         </div>
-        <div className='flex flex-col items-center  gap-20 '>
+        <div className='flex flex-col items-center  gap-15 '>
            <TitleConnexion 
             texte="Choisissez votre type de compte"
             taille="5xl"
