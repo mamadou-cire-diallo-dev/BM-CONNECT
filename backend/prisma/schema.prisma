@@ -63,6 +63,8 @@ model Utilisateur {
   administrateur Administrateur?
   notifications  Notification[]
 
+  deletedAt DateTime?
+
   @@map("utilisateur")
 }
 
@@ -78,6 +80,8 @@ model Client {
 
   utilisateur Utilisateur      @relation(fields: [id], references: [id], onDelete: Cascade)
   demandes    DemandeService[]
+
+  deletedAt DateTime?
 
   @@map("client")
 }
@@ -99,6 +103,8 @@ model Prestataire {
   documents   DocumentPrestataire[]
   specialites PrestataireSpecialite[]
 
+  deletedAt DateTime?
+
   @@map("prestataire")
 }
 
@@ -113,6 +119,8 @@ model Vendeur {
   utilisateur Utilisateur @relation(fields: [id], references: [id], onDelete: Cascade)
   produits    Produit[]
 
+  deletedAt DateTime?
+
   @@map("vendeur")
 }
 
@@ -124,6 +132,8 @@ model Administrateur {
   updatedAt DateTime @updatedAt
 
   utilisateur Utilisateur @relation(fields: [id], references: [id], onDelete: Cascade)
+
+  deletedAt DateTime?
 
   @@map("administrateur")
 }
@@ -138,6 +148,8 @@ model CategorieService {
   updatedAt DateTime @updatedAt
 
   offres ServiceOffre[]
+
+  deletedAt DateTime?
 
   @@map("categorie_service")
 }
@@ -161,6 +173,9 @@ model ServiceOffre {
 
   @@index([prestataireId])
   @@index([categorieId])
+
+  deletedAt DateTime?
+
   @@map("service_offre")
 }
 
@@ -188,6 +203,9 @@ model DemandeService {
   @@index([clientId])
   @@index([prestataireId])
   @@index([offreId])
+
+  deletedAt DateTime?
+
   @@map("demande_service")
 }
 
@@ -208,6 +226,9 @@ model Facture {
   paiements Paiement[]
 
   @@index([demandeId])
+
+  deletedAt DateTime?
+
   @@map("facture")
 }
 
@@ -225,6 +246,9 @@ model Paiement {
   facture   Facture @relation(fields: [factureId], references: [id], onDelete: Cascade)
 
   @@index([factureId])
+
+  deletedAt DateTime?
+
   @@map("paiement")
 }
 
@@ -259,6 +283,9 @@ model Produit {
   vendeur   Vendeur @relation(fields: [vendeurId], references: [id], onDelete: Cascade)
 
   @@index([vendeurId])
+
+  deletedAt DateTime?
+
   @@map("produit")
 }
 
@@ -273,6 +300,8 @@ model DocumentPrestataire {
 
   prestataireId String      @db.Uuid
   prestataire   Prestataire @relation(fields: [prestataireId], references: [id], onDelete: Cascade)
+
+  deletedAt DateTime?
 
   @@index([prestataireId])
   @@map("document_prestataire")
@@ -302,6 +331,8 @@ model Specialite {
   updatedAt DateTime @updatedAt
 
   prestataires PrestataireSpecialite[]
+
+  deletedAt DateTime?
 
   @@map("specialite")
 }

@@ -31,14 +31,32 @@ const options = {
             type: 'apiKey',
             in: 'cookie',
             name: 'refresh_token'
+        },
+        csrfToken: {
+            type: 'apiKey',
+            in: 'header',
+            name: 'X-CSRF-Token',
+            description: 'CSRF token obtained from login response or /auth/csrf endpoint'
         }
       },
+      parameters: {
+        deviceIdHeader: {
+          in: 'header',
+          name: 'X-Device-Id',
+          schema: { type: 'string' },
+          required: false,
+          description: 'Unique device identifier (UUID or fingerprint)'
+        },
+        deviceTokenHeader: {
+          in: 'header',
+          name: 'X-Device-Token',
+          schema: { type: 'string' },
+          required: false,
+          description: 'Device token for trusted device authentication (returned after 2FA)'
+        }
+      }
     },
-    security: [
-      {
-        bearerAuth: [],
-      },
-    ],
+    // No global security - each route defines its own security requirements
   },
   apis: ['./src/routes/*.js', './src/modules/**/*.routes.js'], // Files containing annotations
 };

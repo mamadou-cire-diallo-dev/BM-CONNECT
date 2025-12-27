@@ -13,7 +13,7 @@ import {
   resetPasswordSchema,
   changePasswordSchema,
 } from "./auth.schemas.js";
-import { requireCsrf } from "../../middlewares/csrf.js";
+import { requireCsrf, setCsrf } from "../../middlewares/csrf.js";
 import rateLimit from "express-rate-limit";
 
 
@@ -37,7 +37,7 @@ const router = Router();
  * @swagger
  * tags:
  *   name: Auth
- *   description: Authentication and User Management
+ *   description: Authentication and gestion User
  */
 
 /**
@@ -89,6 +89,9 @@ router.post("/register", validate({ body: registerSchema }), authControllers.reg
  *   post:
  *     summary: Login a user
  *     tags: [Auth]
+ *     parameters:
+ *       - $ref: '#/components/parameters/deviceIdHeader'
+ *       - $ref: '#/components/parameters/deviceTokenHeader'
  *     requestBody:
  *       required: true
  *       content:
@@ -121,6 +124,8 @@ router.post("/login", loginLimiter, validate({ body: loginSchema }), authControl
  *   post:
  *     summary: Verify 2FA code during login
  *     tags: [Auth]
+ *     parameters:
+ *       - $ref: '#/components/parameters/deviceIdHeader'
  *     requestBody:
  *       required: true
  *       content:
@@ -139,7 +144,7 @@ router.post("/login", loginLimiter, validate({ body: loginSchema }), authControl
  *                 type: boolean
  *     responses:
  *       200:
- *         description: Login successful
+ *         description: Login successful (returns deviceToken if rememberDevice=true)
  *       401:
  *         description: Invalid code
  */
@@ -268,6 +273,7 @@ router.post("/password/reset", otpLimiter, validate({ body: resetPasswordSchema 
  *     tags: [Auth]
  *     security:
  *       - cookieAuth: []
+ *       - csrfToken: []
  *     responses:
  *       200:
  *         description: Token refreshed
@@ -282,6 +288,8 @@ router.post("/refresh", requireCsrf, authControllers.refresh);
  *   post:
  *     summary: Logout current session
  *     tags: [Auth]
+ *     security:
+ *       - csrfToken: []
  *     responses:
  *       200:
  *         description: Logged out
@@ -296,6 +304,7 @@ router.post("/logout", requireCsrf, authControllers.logout);
  *     tags: [Auth]
  *     security:
  *       - bearerAuth: []
+ *       - csrfToken: []
  *     responses:
  *       200:
  *         description: Logged out from all devices
@@ -409,7 +418,23 @@ router.delete("/devices", requireAuth, authControllers.deleteAllDevices);
  */
 router.post("/password/change", requireAuth, otpLimiter, validate({ body: changePasswordSchema }), authControllers.changePassword);
 
-// csrf 
+/**
+ * @swagger
+ * /auth/csrf:
+ *   get:
+ *     summary: Get a new CSRF token
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: CSRF token generated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 csrfToken:
+ *                   type: string
+ */
 router.get("/csrf", (req, res) => {
   const token = setCsrf(res);
   // Optionnel: renvoyer aussi le token (utile pour Insomnia)

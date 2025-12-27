@@ -22,6 +22,13 @@ export function requireCsrf(req, res, next) {
   const cookieToken = req.cookies?.[CSRF_COOKIE];
   const headerToken = req.get(CSRF_HEADER);
 
+  // Debug logging (remove in production)
+  console.log("CSRF Debug:", {
+    cookieToken: cookieToken ? cookieToken.substring(0, 8) + "..." : "MISSING",
+    headerToken: headerToken ? headerToken.substring(0, 8) + "..." : "MISSING",
+    match: cookieToken === headerToken
+  });
+
   if (!cookieToken || !headerToken || String(cookieToken) !== String(headerToken)) {
     return res.status(403).json({ message: "CSRF token invalide" });
   }

@@ -8,6 +8,9 @@ import { env } from "./config/env.js";
 import apiRoutes from "./routes/index.js";
 import { errorMiddleware } from "./middlewares/error.js";
 import cookieParser from "cookie-parser";
+// Swagger
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './config/swagger.js';
 
 const app = express();
 
@@ -29,11 +32,18 @@ app.use(
 // API
 app.use("/api", apiRoutes);
 
-// Swagger
-import swaggerUi from 'swagger-ui-express';
-import { swaggerSpec } from './config/swagger.js';
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    swaggerOptions: {
+      withCredentials: true, 
+    },
+  })
+);
+
 app.get('/api-docs.json', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.send(swaggerSpec);
