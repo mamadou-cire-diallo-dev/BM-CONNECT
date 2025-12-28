@@ -1,13 +1,13 @@
 import * as authServices from "./auth.services.js";
 import { env } from "../../config/env.js";
-import { setCsrf } from "../../middlewares/csrf.js";
+import { setCsrf, clearCsrf } from "../../middlewares/csrf.js";
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: env.NODE_ENV === "production",
   sameSite: env.NODE_ENV === "production" ? "none" : "lax",
   maxAge: 30 * 24 * 60 * 60 * 1000,
-  // path: "/", // optionnel (souvent utile)
+  path: "/",
 };
 
 export async function register(req, res, next) {
@@ -80,7 +80,9 @@ export async function refresh(req, res, next) {
 
     // réponse clean: uniquement accessToken
     // ...
-    const csrfToken = setCsrf(res);
+    // Récupérer le token CSRF actuel du cookie pour rester stable
+    const currentCsrf = req.cookies?.csrf_token;
+    const csrfToken = setCsrf(res, currentCsrf);
 
     return res.json({ accessToken: data.accessToken, csrfToken });
   } catch (e) {
@@ -96,8 +98,10 @@ export async function logout(req, res, next) {
       httpOnly: true,
       secure: env.NODE_ENV === "production",
       sameSite: env.NODE_ENV === "production" ? "none" : "lax",
-      // path: "/", // si tu avais mis path au cookie
+      path: "/",
     });
+
+    clearCsrf(res);
 
     return res.json(data);
   } catch (e) {
@@ -113,8 +117,10 @@ export async function logoutAll(req, res, next) {
       httpOnly: true,
       secure: env.NODE_ENV === "production",
       sameSite: env.NODE_ENV === "production" ? "none" : "lax",
-      // path: "/",
+      path: "/",
     });
+
+    clearCsrf(res);
 
     return res.json(data);
   } catch (e) {

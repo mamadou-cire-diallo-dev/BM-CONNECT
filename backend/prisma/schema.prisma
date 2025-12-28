@@ -112,6 +112,7 @@ model Vendeur {
   id          String  @id @db.Uuid
   nomBoutique String?
   adresse     String?
+  verificationStatus PrestataireVerificationStatus @default(PENDING_DOCS)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

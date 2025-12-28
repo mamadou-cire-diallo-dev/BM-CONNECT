@@ -12,10 +12,17 @@ const COOKIE_OPTS = {
   path: "/",
 };
 
-export function setCsrf(res) {
-  const token = randomToken(16); // 32 chars hex
+export function setCsrf(res, existingToken = null) {
+  const token = existingToken || randomToken(16); // 32 chars hex if new
   res.cookie(CSRF_COOKIE, token, COOKIE_OPTS);
   return token;
+}
+
+export function clearCsrf(res) {
+  res.clearCookie(CSRF_COOKIE, {
+    ...COOKIE_OPTS,
+    maxAge: 0,
+  });
 }
 
 export function requireCsrf(req, res, next) {

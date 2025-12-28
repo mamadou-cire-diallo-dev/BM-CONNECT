@@ -21,6 +21,7 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.1.0",
     "dotenv": "^17.2.3",
     "nodemon": "^3.1.11",
     "prisma": "^7.2.0"
@@ -36,7 +37,11 @@
     "start": "node ./src/server.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio",
+    "db:seed": "prisma db seed"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   },
   "keywords": [],
   "author": "",
