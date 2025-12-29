@@ -1,4 +1,4 @@
-import { ACL } from "../policies/acl.js";
+import { ACL } from "./acl.js";
 import { requireRole } from "./rbac.js";
 
 export function requirePermission(resource, action) {

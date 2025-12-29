@@ -11,34 +11,37 @@ const router = Router();
 /**
  * @swagger
  * tags:
- *   name: Offers
- *   description: Service offers management (Prestataires)
+ *   name: Offres
+ *   description: Gestion des offres de services (Prestataires)
  */
 
 /**
  * @swagger
  * /offers:
  *   get:
- *     summary: Get all service offers
- *     tags: [Offers]
+ *     summary: Obtenir toutes les offres de services issaga
+ *     tags: [Offres]
  *     parameters:
  *       - in: query
  *         name: categoryId
+ *         description: Filtrer par ID de catégorie
  *         schema:
  *           type: string
  *           format: uuid
  *       - in: query
  *         name: prestataireId
+ *         description: Filtrer par ID de prestataire
  *         schema:
  *           type: string
  *           format: uuid
  *       - in: query
  *         name: search
+ *         description: Recherche par mot-clé dans le titre ou la description
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: List of offers
+ *         description: Liste des offres
  */
 router.get("/", offersControllers.getOffers);
 
@@ -46,20 +49,21 @@ router.get("/", offersControllers.getOffers);
  * @swagger
  * /offers/{id}:
  *   get:
- *     summary: Get an offer by ID
- *     tags: [Offers]
+ *     summary: Obtenir une offre par ID
+ *     tags: [Offres]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
+ *         description: ID de l'offre
  *         schema:
  *           type: string
  *           format: uuid
  *     responses:
  *       200:
- *         description: Offer details
+ *         description: Détails de l'offre
  *       404:
- *         description: Offer not found
+ *         description: Offre introuvable
  */
 router.get("/:id", offersControllers.getOfferById);
 
@@ -67,8 +71,8 @@ router.get("/:id", offersControllers.getOfferById);
  * @swagger
  * /offers:
  *   post:
- *     summary: Create a new offer (Prestaire only)
- *     tags: [Offers]
+ *     summary: Créer une nouvelle offre (Prestataire uniquement)
+ *     tags: [Offres]
  *     security:
  *       - bearerAuth: []
  *       - csrfToken: []
@@ -80,7 +84,7 @@ router.get("/:id", offersControllers.getOfferById);
  *             $ref: '#/components/schemas/OfferInput'
  *     responses:
  *       201:
- *         description: Offer created
+ *         description: Offre créée
  */
 router.post(
   "/",

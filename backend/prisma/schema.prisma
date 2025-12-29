@@ -239,6 +239,8 @@ model Paiement {
   modePaye     String
   datePaiement DateTime @default(now())
   statut       String
+  reference    String?  @unique // ID de transaction externe (Mobile Money)
+  provider     String?          // Ex: Orange, Moov, Flutterwave
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -36,16 +36,16 @@ const router = Router();
 /**
  * @swagger
  * tags:
- *   name: Auth
- *   description: Authentication and gestion User
+ *   name: Authentification
+ *   description: Gestion de l'authentification et du compte utilisateur
  */
 
 /**
  * @swagger
  * /auth/register:
  *   post:
- *     summary: Register a new user
- *     tags: [Auth]
+ *     summary: Inscrire un nouvel utilisateur
+ *     tags: [Authentification]
  *     requestBody:
  *       required: true
  *       content:
@@ -74,12 +74,12 @@ const router = Router();
  *                 enum: [CLIENT, PRESTATAIRE, VENDEUR]
  *               actor:
  *                 type: object
- *                 description: Specific data for the selected role
+ *                 description: Données spécifiques pour le rôle sélectionné
  *     responses:
  *       201:
- *         description: User registered successfully
+ *         description: Utilisateur inscrit avec succès
  *       400:
- *         description: Validation error
+ *         description: Erreur de validation
  */
 router.post("/register", validate({ body: registerSchema }), authControllers.register);
 
@@ -87,8 +87,8 @@ router.post("/register", validate({ body: registerSchema }), authControllers.reg
  * @swagger
  * /auth/login:
  *   post:
- *     summary: Login a user
- *     tags: [Auth]
+ *     summary: Connecter un utilisateur
+ *     tags: [Authentification]
  *     parameters:
  *       - $ref: '#/components/parameters/deviceIdHeader'
  *       - $ref: '#/components/parameters/deviceTokenHeader'
@@ -104,17 +104,17 @@ router.post("/register", validate({ body: registerSchema }), authControllers.reg
  *             properties:
  *               identifier:
  *                 type: string
- *                 description: Email or phone number
+ *                 description: Email ou numéro de téléphone
  *               motDePasse:
  *                 type: string
  *                 format: password
  *     responses:
  *       200:
- *         description: Login successful (returns tokens or 2FA requirement)
+ *         description: Connexion réussie (retourne les tokens ou demande la 2FA)
  *       202:
- *         description: 2FA required
+ *         description: 2FA requise
  *       401:
- *         description: Invalid credentials
+ *         description: Identifiants invalides
  */
 router.post("/login", loginLimiter, validate({ body: loginSchema }), authControllers.login);
 
@@ -122,8 +122,8 @@ router.post("/login", loginLimiter, validate({ body: loginSchema }), authControl
  * @swagger
  * /auth/login/2fa/verify:
  *   post:
- *     summary: Verify 2FA code during login
- *     tags: [Auth]
+ *     summary: Vérifier le code 2FA pendant la connexion
+ *     tags: [Authentification]
  *     parameters:
  *       - $ref: '#/components/parameters/deviceIdHeader'
  *     requestBody:
@@ -144,9 +144,9 @@ router.post("/login", loginLimiter, validate({ body: loginSchema }), authControl
  *                 type: boolean
  *     responses:
  *       200:
- *         description: Login successful (returns deviceToken if rememberDevice=true)
+ *         description: Connexion réussie (retourne deviceToken si rememberDevice=true)
  *       401:
- *         description: Invalid code
+ *         description: Code invalide
  */
 router.post("/login/2fa/verify", otpLimiter, validate({ body: verify2faSchema }), authControllers.verify2fa);
 
@@ -154,8 +154,8 @@ router.post("/login/2fa/verify", otpLimiter, validate({ body: verify2faSchema })
  * @swagger
  * /auth/verify:
  *   post:
- *     summary: Verify contact (email/phone)
- *     tags: [Auth]
+ *     summary: Vérifier le contact (email/téléphone)
+ *     tags: [Authentification]
  *     requestBody:
  *       required: true
  *       content:
@@ -176,9 +176,9 @@ router.post("/login/2fa/verify", otpLimiter, validate({ body: verify2faSchema })
  *                 type: string
  *     responses:
  *       200:
- *         description: Contact verified
+ *         description: Contact vérifié
  *       400:
- *         description: Invalid code
+ *         description: Code invalide
  */
 router.post("/verify", otpLimiter, validate({ body: verifySchema }), authControllers.verify);
 
@@ -186,8 +186,8 @@ router.post("/verify", otpLimiter, validate({ body: verifySchema }), authControl
  * @swagger
  * /auth/resend:
  *   post:
- *     summary: Resend verification code
- *     tags: [Auth]
+ *     summary: Renvoyer le code de vérification
+ *     tags: [Authentification]
  *     requestBody:
  *       required: true
  *       content:
@@ -205,7 +205,7 @@ router.post("/verify", otpLimiter, validate({ body: verifySchema }), authControl
  *                 type: string
  *     responses:
  *       200:
- *         description: Code sent
+ *         description: Code envoyé
  */
 router.post("/resend", otpLimiter, validate({ body: resendSchema }), authControllers.resend);
 
@@ -213,8 +213,8 @@ router.post("/resend", otpLimiter, validate({ body: resendSchema }), authControl
  * @swagger
  * /auth/password/forgot:
  *   post:
- *     summary: Request password reset
- *     tags: [Auth]
+ *     summary: Demander la réinitialisation du mot de passe
+ *     tags: [Authentification]
  *     requestBody:
  *       required: true
  *       content:
@@ -229,7 +229,7 @@ router.post("/resend", otpLimiter, validate({ body: resendSchema }), authControl
  *                 format: email
  *     responses:
  *       200:
- *         description: Reset code sent
+ *         description: Code de réinitialisation envoyé
  */
 router.post("/password/forgot", otpLimiter, validate({ body: forgotPasswordSchema }), authControllers.forgotPassword);
 
@@ -269,16 +269,16 @@ router.post("/password/reset", otpLimiter, validate({ body: resetPasswordSchema 
  * @swagger
  * /auth/refresh:
  *   post:
- *     summary: Refresh access token
- *     tags: [Auth]
+ *     summary: Rafraîchir le token d'accès
+ *     tags: [Authentification]
  *     security:
  *       - cookieAuth: []
  *       - csrfToken: []
  *     responses:
  *       200:
- *         description: Token refreshed
+ *         description: Token rafraîchi
  *       401:
- *         description: Valid refresh token required
+ *         description: Refresh token valide requis
  */
 router.post("/refresh", requireCsrf, authControllers.refresh);
 
@@ -286,13 +286,13 @@ router.post("/refresh", requireCsrf, authControllers.refresh);
  * @swagger
  * /auth/logout:
  *   post:
- *     summary: Logout current session
- *     tags: [Auth]
+ *     summary: Déconnexion de la session actuelle
+ *     tags: [Authentification]
  *     security:
  *       - csrfToken: []
  *     responses:
  *       200:
- *         description: Logged out
+ *         description: Déconnecté avec succès
  */
 router.post("/logout", requireCsrf, authControllers.logout);
 
@@ -316,13 +316,13 @@ router.post("/logout-all", requireCsrf, requireAuth, authControllers.logoutAll);
  * @swagger
  * /auth/me:
  *   get:
- *     summary: Get current user profile
- *     tags: [Auth]
+ *     summary: Obtenir le profil de l'utilisateur actuel
+ *     tags: [Authentification]
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: User profile
+ *         description: Profil de l'utilisateur
  */
 router.get("/me", requireAuth, authControllers.me);
 

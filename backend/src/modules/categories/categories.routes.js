@@ -11,19 +11,19 @@ const router = Router();
 /**
  * @swagger
  * tags:
- *   name: Categories
- *   description: Service categories management
+ *   name: Catégories
+ *   description: Gestion des catégories de services
  */
 
 /**
  * @swagger
  * /categories:
  *   get:
- *     summary: Get all categories
- *     tags: [Categories]
+ *     summary: Obtenir toutes les catégories
+ *     tags: [Catégories]
  *     responses:
  *       200:
- *         description: List of categories
+ *         description: Liste des catégories
  */
 router.get("/", categoriesControllers.getCategories);
 
@@ -31,20 +31,21 @@ router.get("/", categoriesControllers.getCategories);
  * @swagger
  * /categories/{id}:
  *   get:
- *     summary: Get a category by ID
- *     tags: [Categories]
+ *     summary: Obtenir une catégorie par ID
+ *     tags: [Catégories]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
+ *         description: ID de la catégorie
  *         schema:
  *           type: string
  *           format: uuid
  *     responses:
  *       200:
- *         description: Category details
+ *         description: Détails de la catégorie
  *       404:
- *         description: Category not found
+ *         description: Catégorie introuvable
  */
 router.get("/:id", categoriesControllers.getCategoryById);
 
@@ -52,8 +53,8 @@ router.get("/:id", categoriesControllers.getCategoryById);
  * @swagger
  * /categories:
  *   post:
- *     summary: Create a new category (Admin only)
- *     tags: [Categories]
+ *     summary: Créer une nouvelle catégorie (Admin uniquement)
+ *     tags: [Catégories]
  *     security:
  *       - bearerAuth: []
  *       - csrfToken: []
@@ -65,7 +66,7 @@ router.get("/:id", categoriesControllers.getCategoryById);
  *             $ref: '#/components/schemas/CategoryInput'
  *     responses:
  *       201:
- *         description: Category created
+ *         description: Catégorie créée
  */
 router.post(
   "/",

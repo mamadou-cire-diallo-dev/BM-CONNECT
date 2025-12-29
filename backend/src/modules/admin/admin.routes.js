@@ -11,21 +11,21 @@ const router = Router();
 /**
  * @swagger
  * tags:
- *   name: Admin
- *   description: Administrative operations
+ *   name: Administration
+ *   description: Opérations administratives (Vérification de comptes, etc.)
  */
 
 /**
  * @swagger
  * /admin/pending/prestataires:
  *   get:
- *     summary: List prestataires pending verification (Admin only)
- *     tags: [Admin]
+ *     summary: Lister les prestataires en attente de vérification (Admin uniquement)
+ *     tags: [Administration]
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: List of pending prestataires
+ *         description: Liste des prestataires en attente
  */
 router.get(
   "/pending/prestataires",
@@ -38,13 +38,13 @@ router.get(
  * @swagger
  * /admin/pending/vendeurs:
  *   get:
- *     summary: List vendeurs pending verification (Admin only)
- *     tags: [Admin]
+ *     summary: Lister les vendeurs en attente de vérification (Admin uniquement)
+ *     tags: [Administration]
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: List of pending vendeurs
+ *         description: Liste des vendeurs en attente
  */
 router.get(
   "/pending/vendeurs",
@@ -57,8 +57,8 @@ router.get(
  * @swagger
  * /admin/verify/prestataire/{id}:
  *   patch:
- *     summary: Verify/Approve a prestataire (Admin only)
- *     tags: [Admin]
+ *     summary: Vérifier/Approuver un prestataire (Admin uniquement)
+ *     tags: [Administration]
  *     security:
  *       - bearerAuth: []
  *       - csrfToken: []
@@ -66,6 +66,7 @@ router.get(
  *       - in: path
  *         name: id
  *         required: true
+ *         description: ID de l'utilisateur (UUID)
  *         schema:
  *           type: string
  *           format: uuid
@@ -77,7 +78,7 @@ router.get(
  *             $ref: '#/components/schemas/VerifyAccountInput'
  *     responses:
  *       200:
- *         description: Verification updated
+ *         description: Statut de vérification mis à jour
  */
 router.patch(
   "/verify/prestataire/:id",
