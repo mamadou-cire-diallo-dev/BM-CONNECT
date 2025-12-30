@@ -1,8 +1,8 @@
 import { SearchIcon, PanelLeft, Bell } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleTheme } from "../features/themeSlice";
+import { toggleTheme } from "../../features/themeSlice";
 import { MoonIcon, SunIcon } from "lucide-react";
-import { assets } from "../assets/assets";
+import { assets } from "../../assets/assets";
 
 const Navbar = ({ setIsSidebarOpen }) => {
   const dispatch = useDispatch();
@@ -16,20 +16,11 @@ const Navbar = ({ setIsSidebarOpen }) => {
           {/* Sidebar Trigger */}
           <button
             onClick={() => setIsSidebarOpen((prev) => !prev)}
-            className="sm:hidde p-2 sm:-ml-10 rounded-lg transition-colors text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-zinc-800"
+            className="p-2 sm:-ml-10 rounded-lg transition-colors text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-zinc-800"
           >
             <PanelLeft size={20} />
           </button>
-
-          {/* Search Input */}
-          {/* <div className="relative flex-1 max-w-sm">
-            <SearchIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-zinc-400 size-3.5" />
-            <input
-              type="text"
-              placeholder="Search projects, tasks..."
-              className="pl-8 pr-4 py-2 w-full bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 rounded-md text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition"
-            />
-          </div> */}
+          <h1 className="text-xl font-bold dark:text-white ml-2 hidden sm:block">Espace Vendeur</h1>
         </div>
 
         {/* Right section */}
@@ -46,16 +37,18 @@ const Navbar = ({ setIsSidebarOpen }) => {
             )}
           </button>
 
-          <button className="relative p-2 rounded-full hover:bg-slate-100 text-slate-600 transition-colors">
+          <button className="relative p-2 rounded-full hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-600 dark:text-slate-300 transition-colors">
             <Bell size={20} />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-orange-500 rounded-full border-2 border-white"></span>
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-orange-500 rounded-full border-2 border-white dark:border-zinc-900"></span>
           </button>
           {/* User Button */}
-          <img
-            src={assets.profile_img_a}
-            alt="User Avatar"
-            className="size-7 rounded-full"
-          />
+          <div className="flex items-center gap-2 border-l border-slate-200 dark:border-zinc-800 pl-3">
+            <img
+              src={assets.profile_img_a || "https://i.pravatar.cc/300"}
+              alt="User Avatar"
+              className="size-8 rounded-full"
+            />
+          </div>
         </div>
       </div>
     </div>

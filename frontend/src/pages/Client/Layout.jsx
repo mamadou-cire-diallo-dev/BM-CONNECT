@@ -7,8 +7,8 @@ import { loadTheme } from '../../features/themeSlice'
 
 
 const LayoutClient = () => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-    
+    const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 1024)
+
     const dispatch = useDispatch()
 
     // Initial load of theme

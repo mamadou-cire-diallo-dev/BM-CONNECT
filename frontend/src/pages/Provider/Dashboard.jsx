@@ -14,13 +14,11 @@ import {
   Bar,
   Legend
 } from 'recharts';
+import SectionHeader from '../../components/Provider/SectionHeader';
 import {
-  
   Users,
   ShoppingBag,
-  
   TrendingUp,
-
   Activity
 } from 'lucide-react';
 
@@ -51,6 +49,9 @@ const providerData = [
 
 const COLORS = ['#F97316', '#0F172A', '#64748B']; // Orange, Dark Blue, Gray
 
+import ActivityCharts from '../../components/Provider/Dashboard/ActivityCharts';
+import DistributionPanel from '../../components/Provider/Dashboard/DistributionPanel';
+
 
 
 const StatCard = ({ title, value, change, icon: Icon, color }) => (
@@ -69,17 +70,12 @@ const StatCard = ({ title, value, change, icon: Icon, color }) => (
   </div>
 );
 
-const DashboardClient = () => {
+const Dashboard = () => {
 
   return (
     <div className="flex text-slate-900 transition-all  overflow-hidden">
-
-
       {/* Main Content */}
       <main className="flex-1 flex flex-col relative">
-
-       
-
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-hidden">
           <div className="max-w-7xl mx-auto space-y-6">
@@ -97,75 +93,8 @@ const DashboardClient = () => {
 
             {/* Charts Section 1 */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Activity Area Chart */}
-              <div className="lg:col-span-2 bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-sm border dark:border-zinc-800 border-slate-100">
-                <h3 className="text-lg font-bold dark:text-white text-slate-800 mb-6">Activité & Revenus</h3>
-                <div className="h-80 w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={activityData}>
-                      <defs>
-                        <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#F97316" stopOpacity={0.2} />
-                          <stop offset="95%" stopColor="#F97316" stopOpacity={0} />
-                        </linearGradient>
-                        <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#f2F52C" stopOpacity={0.2} />
-                          <stop offset="95%" stopColor="#0F172A" stopOpacity={0} />
-                        </linearGradient>
-                      </defs>
-                      <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8' }} />
-                      <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8' }} />
-                      <CartesianGrid vertical={false} stroke="#f1f5f9" />
-                      <Tooltip
-                        contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                      />
-                      <Area type="monotone" dataKey="revenue" stroke="#F97316" strokeWidth={3} fillOpacity={1} fill="url(#colorRevenue)" />
-                      <Area type="monotone" dataKey="users" stroke="#0F172A" strokeWidth={3} fillOpacity={1} fill="url(#colorUsers)" />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-
-              {/* Donut Chart */}
-              <div className=" bg-white dark:bg-zinc-900  p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-zinc-800">
-                <h3 className="text-lg font-bold dark:text-white text-slate-800 mb-6">Répartition</h3>
-                <div className="h-64 w-full relative">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={distributionData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={60}
-                        outerRadius={80}
-                        paddingAngle={5}
-                        dataKey="value"
-                      >
-                        {distributionData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                    </PieChart>
-                  </ResponsiveContainer>
-                  {/* Center Text */}
-                  <div className="absolute inset-0 flex items-center justify-center flex-col pointer-events-none">
-                    <span className="text-3xl font-bold dark:text-white text-slate-800">100%</span>
-                    <span className="text-xs text-slate-400">Total</span>
-                  </div>
-                </div>
-                <div className="mt-6 space-y-3">
-                  {distributionData.map((item, index) => (
-                    <div key={item.name} className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[index] }}></div>
-                        <span className="text-sm text-slate-600">{item.name}</span>
-                      </div>
-                      <span className="text-sm font-semibold text-slate-900">{item.value}%</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <ActivityCharts activityData={activityData} />
+              <DistributionPanel distributionData={distributionData} colors={COLORS} />
             </div>
 
             {/* Charts Section 2 - Provider Categories */}
@@ -195,4 +124,4 @@ const DashboardClient = () => {
   );
 };
 
-export default DashboardClient;
+export default Dashboard;

@@ -1,27 +1,29 @@
 import { useEffect, useRef } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
-import Logo from "../Logo";
 import {
   FolderOpenIcon,
   LayoutDashboardIcon,
   SettingsIcon,
-  UsersIcon,
+  User,
+  CreditCard,
+  FileText
 } from "lucide-react";
 
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
+  const location = useLocation();
   const menuItems = [
     { name: "Dashboard", href: "/client", icon: LayoutDashboardIcon },
-    { name: "Historique", href: "/history", icon: FolderOpenIcon },
-    { name: "Historique", href: "/history", icon: FolderOpenIcon },
-    
+    { name: "Mes réservations", href: "/client/requests", icon: FolderOpenIcon },
+    { name: "Factures", href: "/client/invoices", icon: FileText },
+    { name: "Profile", href: "/client/profile", icon: User },
   ];
 
   const sidebarRef = useRef(null);
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target) && window.innerWidth < 1024) {
         setIsSidebarOpen(false);
       }
     }
@@ -29,52 +31,75 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setIsSidebarOpen]);
 
+  // Check if desktop to show collapsed state correctly
+  const isDesktop = window.innerWidth >= 768;
+
   return (
-    <div
+    <aside
       ref={sidebarRef}
-      className={`z-10 bg-white dark:bg-zinc-900 min-w-68 flex flex-col h-screen border-r border-gray-200 dark:border-zinc-800 max-sm:absolute transition-all ${
-        isSidebarOpen ? "left-0" : "-left-full"
-      } `}
+      className={`bg-[#0F172A] flex flex-col ${isSidebarOpen ? 'w-64' : isDesktop ? 'w-20 ' : 'w-0 transition-all duration-300'
+        } h-screen fixed lg:static z-[100] overflow-hidden shadow-xl lg:shadow-none`}
     >
-      <Logo />
-      <hr className="border-gray-200 dark:border-zinc-800" />
-      <div className="flex-1 overflow-y-scroll no-scrollbar flex flex-col">
-        <div>
-          <div className="p-4">
-            {menuItems.map((item) => (
-              <NavLink
-                to={item.href}
-                key={item.name}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 py-2 px-4 text-gray-800 dark:text-zinc-100 cursor-pointer rounded transition-all  ${
-                    isActive
-                      ? "bg-orange/40 dark:bg-gradient-to-br dark:from-orange/50 dark:to-orange/50  dark:ring-zinc-800"
-                      : "hover:bg-gray-50 dark:hover:bg-zinc-800/60"
-                  }`
-                }
-              >
-                <item.icon size={16} />
-                <p className="text-md max-md:text-sm truncate">{item.name}</p>
-              </NavLink>
-            ))}
-            <button className="flex w-full items-center gap-3 py-2 px-4 text-gray-800 dark:text-zinc-100 cursor-pointer rounded hover:bg-gray-50 dark:hover:bg-zinc-800/60 transition-all">
-              <SettingsIcon size={16} />
-              <p className="text-sm truncate">Settings</p>
-            </button>
+      <div className="p-6 flex items-center justify-between h-20">
+        <div className={`flex items-center gap-3 ${!isSidebarOpen && 'justify-center w-full'}`}>
+          <div className="w-8 h-8 rounded-lg bg-orange-500 flex items-center justify-center shrink-0 text-white font-bold">
+            BM
           </div>
-        </div>
-        {/* infos user  */}
-        <div className="mt-auto p-4 flex items-center gap-3 border-t border-gray-200 dark:border-zinc-800">
-          <div className="w-8 h-8 bg-gray-300 dark:bg-zinc-700 rounded-full">
-            
-          </div>
-          <div>
-            <p className="font-semibold text-gray-600 dark:text-gray-100">Alpha Oumar Balde</p>
-            <p className="text-gray-400 text-xs">alphaoumaraob97@gmail.com</p>
-          </div>
+          {isSidebarOpen && <span className="text-white font-bold text-xl tracking-tight">CONNECT</span>}
         </div>
       </div>
-    </div>
+
+      <nav className="flex-1 px-4 space-y-2 mt-4 overflow-y-auto custom-scrollbar">
+        {menuItems.map((item) => (
+          <NavLink
+            to={item.href}
+            key={item.name}
+            end={item.href === "/client"}
+            onClick={() => window.innerWidth < 1024 && setIsSidebarOpen(false)}
+            className={({ isActive }) => {
+              const isItemActive = isActive;
+
+              return `flex items-center gap-3 w-full px-4 py-1 rounded-xl transition-all duration-200 group ${isItemActive
+                ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/30'
+                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                }`;
+            }}
+          >
+            <item.icon size={20} />
+            {isSidebarOpen && <span className="font-medium whitespace-nowrap">{item.name}</span>}
+          </NavLink>
+        ))}
+
+        <div className="pt-8 pb-2">
+          {isSidebarOpen && (
+            <p className="px-4 text-xs text-slate-500 font-semibold uppercase tracking-wider mb-2">
+              Support
+            </p>
+          )}
+          <button className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition-all duration-200 ${!isSidebarOpen && 'justify-center'}`}>
+            <SettingsIcon size={20} />
+            {isSidebarOpen && <span className="font-medium">Paramètres</span>}
+          </button>
+        </div>
+      </nav>
+
+      <div className="p-4 border-t border-slate-800">
+        {/* User Info */}
+        <div>
+          <NavLink to="/client/profile" onClick={() => window.innerWidth < 1024 && setIsSidebarOpen(false)} className="flex items-center gap-3 mb-2 p-2 rounded-lg hover:bg-slate-800 transition-colors group cursor-pointer">
+            <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-white ring-2 ring-slate-700 group-hover:ring-orange-500 transition-all">
+              <User size={20} />
+            </div>
+            {isSidebarOpen && (
+              <div className="flex-1 min-w-0">
+                <p className="text-white font-medium truncate">Client User</p>
+                <p className="text-xs text-slate-400 truncate">Voir le profil</p>
+              </div>
+            )}
+          </NavLink>
+        </div>
+      </div>
+    </aside>
   );
 };
 

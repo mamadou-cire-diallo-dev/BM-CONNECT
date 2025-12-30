@@ -1,4 +1,3 @@
-import { logoImg } from "../assets/data";
 
 function Logo() {
 

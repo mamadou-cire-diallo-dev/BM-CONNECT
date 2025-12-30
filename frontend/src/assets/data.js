@@ -24,7 +24,7 @@ export const demandesServicesPrestataire = [
   {
     id: "dem_1",
     description: "Fuite sous évier",
-    statut: "PENDING",
+    statut: "ACCEPTED",
     date: "2025-10-20T10:30:00.000Z",
 
     client: dummyClients.find((c) => c.id === "client_1"),
@@ -72,7 +72,7 @@ export const demandesServicesPrestataire = [
   {
     id: "dem_4",
     description: "Reparation de climatiseur",
-    statut: "CANCELED",
+    statut: "ACCEPTED",
     date: "2025-10-18T14:00:00.000Z",
 
     client: dummyClients.find((c) => c.id === "client_3"),
@@ -105,7 +105,7 @@ export const demandesServicesPrestataire = [
     id: "dem_6",
     description: "Installation de Courant",
     statut: "CANCELED",
-    date: "2025-10-18T14:00:00.000Z",
+    date: "2025-12-30T14:00:00.000Z",
 
     client: dummyClients.find((c) => c.id === "client_1"),
 
