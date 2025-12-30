@@ -145,16 +145,29 @@ model ServiceOffre {
 
 model DemandeService {
   id            String    @id @default(uuid()) @db.Uuid
-  dateSouhaitee DateTime
-  description   String?
-  acoumpt     Decimal?  @db.Decimal(12, 2)
-  coutPrestation    Decimal?  @db.Decimal(12, 2)
-  statut        StatutDemande @default(EN_ATTENTE)
 
+  // PLANIFICATION
+  dateDebut         DateTime        // créneau réservé par le client avant diagnostic
+  dateFin           DateTime         // recalculée automatiquement après diagnostic en fonction de la durée estimée
+  dureeInitialeMin  Int              @default(120) // 2h par défaut
+  dureeEstimeeMin   Int              @default(120) // ajustée après diagnostic 
+
+  // INFORMATIONS
+  description       String?
+
+  // TARIFICATION
+  acoumpt           Decimal? @db.Decimal(12, 2)
+  coutPrestation    Decimal? @db.Decimal(12, 2)
+
+  // WORKFLOW
+  statut            StatutDemande @default(EN_ATTENTE)
+
+  // META
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  deletedAt DateTime? 
+  deletedAt DateTime?
 
+  // RELATIONS
   clientId      String @db.Uuid
   prestataireId String @db.Uuid
   offreId       String @db.Uuid
@@ -166,11 +179,15 @@ model DemandeService {
   facture       Facture?
   piecesJointes PieceJointeDemande[]
 
+  // PERFORMANCES
+  @@index([prestataireId, dateDebut])
   @@index([clientId])
   @@index([prestataireId])
   @@index([offreId])
+
   @@map("demande_service")
 }
+
 
 model Facture {
   id           String   @id @default(uuid()) @db.Uuid

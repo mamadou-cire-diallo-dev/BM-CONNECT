@@ -1,11 +1,49 @@
 import { prisma } from "../../db/prisma.js";
+import { addMinutes } from "date-fns";
+
+const BUFFER_MIN = 15;
+const SEUIL_MIN = 120; // 2h
+
 
 /**
- * Créer une demande
+ * Créer une demande de service tout en adaptant les crénos aux workflow
  */
 export const createDemandeService = async (data) => {
-  return await prisma.demandeService.create({ data });
+  const {
+    dateDebut,
+    prestataireId,
+    clientId,
+    offreId,
+    dureeInitialeMin = 120,
+  } = data;
+
+  const dateFin = addMinutes(new Date(dateDebut), dureeInitialeMin);
+
+  // Vérifier conflits
+  const conflit = await prisma.demandeService.findFirst({
+    where: {
+      prestataireId,
+      deletedAt: null,
+      AND: [
+        { dateDebut: { lt: dateFin } },
+        { dateFin: { gt: new Date(dateDebut) } },
+      ],
+    },
+  });
+
+  if (conflit) {
+    throw new Error("Créneau indisponible pour ce prestataire");
+  }
+
+  return await prisma.demandeService.create({
+    data: {
+      ...data,
+      dateFin,
+      dureeEstimeeMin: dureeInitialeMin,
+    },
+  });
 };
+
 
 /**
  * Récupérer toutes les demandes
@@ -66,16 +104,22 @@ export const updateDemandeService = async (id, data, userRole = "CLIENT") => {
   const demande = await prisma.demandeService.findUnique({ where: { id } });
   if (!demande) throw new Error("Demande introuvable");
 
-  // Gestion de l'annulation
+  /* ======================
+     GESTION ANNULATION
+  ====================== */
   if (data.statut === "ANNULEE") {
     if (userRole === "CLIENT") {
       if (!["EN_ATTENTE", "ACOMPTE_EN_ATTENTE"].includes(demande.statut)) {
-        throw new Error("Le client ne peut annuler que les demandes avant le début de la prestation");
+        throw new Error(
+          "Vous ne pouvez pas annuler cette prestation car elle est en cours"
+        );
       }
     }
   }
 
-  // Transitions valides
+  /* ======================
+     WORKFLOW STATUT
+  ====================== */
   const validTransitions = {
     EN_ATTENTE: ["REFUSEE", "ACOMPTE_EN_ATTENTE", "ANNULEE"],
     REFUSEE: [],
@@ -88,13 +132,83 @@ export const updateDemandeService = async (id, data, userRole = "CLIENT") => {
 
   if (data.statut && data.statut !== "ANNULEE") {
     if (!validTransitions[demande.statut].includes(data.statut)) {
-      throw new Error(`Transition invalide: ${demande.statut} à ${data.statut}`);
+      throw new Error(
+        `Transition invalide: ${demande.statut} → ${data.statut}`
+      );
     }
   }
 
+  let updateData = { ...data };
+
+  /* ======================
+    DIAGNOSTIC (CRÉNEAUX)
+  ====================== */
+  if (
+    data.statut === "EN_COURS" &&
+    data.dureeEstimeeMin &&
+    userRole === "PRESTATAIRE"
+  ) {
+    // Nouvelle fin réelle après diagnostic
+    const nouvelleFin = addMinutes(
+      demande.dateDebut,
+      data.dureeEstimeeMin
+    );
+
+    updateData.dateFin = nouvelleFin;
+
+    // Calcul du dépassement réel
+    const depassementMin =
+      data.dureeEstimeeMin - demande.dureeInitialeMin;
+
+    /**
+     * CAS 1 : durée <= 2h → on ne touche PAS aux prestations suivantes
+     */
+    if (depassementMin <= 0) {
+      return await prisma.demandeService.update({
+        where: { id },
+        data: updateData,
+      });
+    }
+
+    /**
+     * CAS 2 : durée > 2h → replanification automatique
+     */
+    const demandesSuivantes = await prisma.demandeService.findMany({
+      where: {
+        prestataireId: demande.prestataireId,
+        deletedAt: null,
+        statut: {
+          notIn: ["ANNULEE", "REFUSEE"],
+        },
+        dateDebut: {
+          gt: demande.dateDebut,
+        },
+      },
+      orderBy: { dateDebut: "asc" },
+    });
+
+    let lastEnd = addMinutes(nouvelleFin, BUFFER_MIN);
+
+    for (const d of demandesSuivantes) {
+      const newStart = lastEnd;
+      const newEnd = addMinutes(newStart, d.dureeEstimeeMin);
+
+      await prisma.demandeService.update({
+        where: { id: d.id },
+        data: {
+          dateDebut: newStart,
+          dateFin: newEnd,
+        },
+      });
+
+      lastEnd = addMinutes(newEnd, BUFFER_MIN);
+    }
+  }
+
+
   return await prisma.demandeService.update({
     where: { id },
-    data,
+    data: updateData,
   });
 };
 
@@ -111,7 +225,7 @@ export const deleteDemandeService = async (id, userRole) => {
   if (!demande) throw new Error("Demande introuvable");
 
   // Soft delete : on met juste deletedAt
-  return await prisma.demandeService.delete({
+  return await prisma.demandeService.update({
     where: { id },
     data: { deletedAt: new Date() },
   });

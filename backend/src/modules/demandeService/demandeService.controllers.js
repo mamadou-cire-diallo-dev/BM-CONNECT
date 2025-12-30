@@ -17,15 +17,16 @@ import {
 
 export const createDemandeController = async (req, res) => {
   try {
-    const { error, value } = createDemandeSchema.validate(req.body, { abortEarly: false });
-    if (error) return res.status(400).json({ message: "Données invalides", errors: error.details });
+    const { error, value } = createDemandeSchema.validate(req.body);
+    if (error) return res.status(400).json(error);
 
     const demande = await createDemandeService(value);
-    res.status(201).json({ message: "Demande créée", data: demande });
+    res.status(201).json({ data: demande });
   } catch (err) {
-    res.status(500).json({ message: "Erreur lors de la création", error: err.message });
+    res.status(400).json({ message: err.message });
   }
 };
+
 
 export const getAllDemandesController = async (req, res) => {
   try {
