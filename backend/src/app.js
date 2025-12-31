@@ -4,7 +4,6 @@ import helmet from "helmet";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
 
-import { prisma } from "./db/prisma.js";
 import { env } from "./config/env.js";
 import apiRoutes from "./routes/index.js";
 import { errorMiddleware } from "./middlewares/error.js";
@@ -15,14 +14,8 @@ import { swaggerSpec } from './config/swagger.js';
 
 const app = express();
 
-// Security & middlewares
 app.use(helmet());
-app.use(
-  cors({
-    origin: env.CORS_ORIGIN === "*" ? true : env.CORS_ORIGIN,
-    credentials: true,
-  })
-);
+app.use(cors({ origin: env.CORS_ORIGIN === "*" ? true : env.CORS_ORIGIN, credentials: true }));
 app.use(express.json({ limit: "2mb" }));
 app.use(morgan("dev"));
 app.use(cookieParser());
@@ -36,7 +29,7 @@ app.use(
   })
 );
 
-// API routes
+// API
 app.use("/api", apiRoutes);
 
 
@@ -57,9 +50,7 @@ app.get('/api-docs.json', (req, res) => {
 });
 
 // 404
-app.use((req, res) =>
-  res.status(404).json({ message: "Route not found" })
-);
+app.use((req, res) => res.status(404).json({ message: "Route not found" }));
 
 // errors
 app.use(errorMiddleware);

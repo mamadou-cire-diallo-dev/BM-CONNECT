@@ -1,5 +1,6 @@
 import { prisma } from "../src/db/prisma.js";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import bcrypt from "bcrypt";
 import { Role } from "../src/generated/prisma/index.js";
 
@@ -102,6 +103,8 @@ main()
   .catch((error) => {
     console.error("Erreur lors du seed :", error);
 =======
+=======
+>>>>>>> 3dc11834e0a9eb3f942f8a2ecd2481d4e26b198e
 import { buildUtilisateur, buildActor } from "./factories/utilisateur.factory.js";
 import { buildCategory, buildOffer } from "./factories/service.factory.js";
 
@@ -198,7 +201,10 @@ async function main() {
 main()
   .catch((e) => {
     console.error("❌ Seed error:", e);
+<<<<<<< HEAD
 >>>>>>> cire
+=======
+>>>>>>> 3dc11834e0a9eb3f942f8a2ecd2481d4e26b198e
     process.exit(1);
   })
   .finally(async () => {

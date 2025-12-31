@@ -15,6 +15,7 @@ enum Role {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 enum StatutDemande {
   EN_ATTENTE           // Créée par le client
   ACOMPTE_EN_ATTENTE   // Attente paiement acompte
@@ -27,6 +28,8 @@ enum StatutDemande {
 
 
 =======
+=======
+>>>>>>> 3dc11834e0a9eb3f942f8a2ecd2481d4e26b198e
 enum AccountStatus {
   PENDING_CONTACT
   ACTIVE
@@ -51,7 +54,10 @@ enum VerificationPurpose {
   LOGIN_2FA
   PASSWORD_RESET
 }
+<<<<<<< HEAD
 >>>>>>> cire
+=======
+>>>>>>> 3dc11834e0a9eb3f942f8a2ecd2481d4e26b198e
 
 model Utilisateur {
   id             String @id @default(uuid()) @db.Uuid
@@ -157,11 +163,10 @@ model CategorieService {
   id          String  @id @default(uuid()) @db.Uuid
   nom         String
   description String?
-  // actif       Boolean @default(true)
+  actif       Boolean @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  deletedAt DateTime?
 
   offres ServiceOffre[]
 
@@ -179,7 +184,6 @@ model ServiceOffre {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  deletedAt DateTime?
 
   prestataireId String @db.Uuid
   categorieId   String @db.Uuid
@@ -198,15 +202,13 @@ model ServiceOffre {
 
 model DemandeService {
   id            String    @id @default(uuid()) @db.Uuid
-  dateSouhaitee DateTime
+  dateSouhaitee DateTime?
   description   String?
-  acoumpt     Decimal?  @db.Decimal(12, 2)
-  coutPrestation    Decimal?  @db.Decimal(12, 2)
-  statut        StatutDemande @default(EN_ATTENTE)
+  statut        String
+  coutEstime    Decimal?  @db.Decimal(12, 2)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  deletedAt DateTime? 
 
   clientId      String @db.Uuid
   prestataireId String @db.Uuid

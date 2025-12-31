@@ -1,5 +1,14 @@
+/*
+  Warnings:
+
+  - You are about to drop the `User` table. If the table is not empty, all the data it contains will be lost.
+
+*/
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('CLIENT', 'PRESTATAIRE', 'VENDEUR', 'ADMINISTRATEUR');
+
+-- DropTable
+DROP TABLE "User";
 
 -- CreateTable
 CREATE TABLE "utilisateur" (
@@ -10,7 +19,6 @@ CREATE TABLE "utilisateur" (
     "motDePasseHash" TEXT NOT NULL,
     "role" "Role" NOT NULL,
     "dateCreation" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "utilisateur_pkey" PRIMARY KEY ("id")
 );
@@ -22,8 +30,6 @@ CREATE TABLE "client" (
     "type" TEXT,
     "nif" TEXT,
     "siege" TEXT,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "client_pkey" PRIMARY KEY ("id")
 );
@@ -34,8 +40,6 @@ CREATE TABLE "prestataire" (
     "tarifHoraire" DECIMAL(12,2),
     "noteMoyenne" DOUBLE PRECISION,
     "disponible" BOOLEAN NOT NULL DEFAULT true,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "prestataire_pkey" PRIMARY KEY ("id")
 );
@@ -45,8 +49,6 @@ CREATE TABLE "vendeur" (
     "id" UUID NOT NULL,
     "nomBoutique" TEXT,
     "adresse" TEXT,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "vendeur_pkey" PRIMARY KEY ("id")
 );
@@ -55,8 +57,6 @@ CREATE TABLE "vendeur" (
 CREATE TABLE "administrateur" (
     "id" UUID NOT NULL,
     "niveau" TEXT,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "administrateur_pkey" PRIMARY KEY ("id")
 );
@@ -66,9 +66,7 @@ CREATE TABLE "categorie_service" (
     "id" UUID NOT NULL,
     "nom" TEXT NOT NULL,
     "description" TEXT,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-    "deletedAt" TIMESTAMP(3),
+    "actif" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "categorie_service_pkey" PRIMARY KEY ("id")
 );
@@ -80,9 +78,6 @@ CREATE TABLE "service_offre" (
     "description" TEXT,
     "tempsEstime" INTEGER,
     "prix" DECIMAL(12,2),
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-    "deletedAt" TIMESTAMP(3),
     "prestataireId" UUID NOT NULL,
     "categorieId" UUID NOT NULL,
 
@@ -96,8 +91,6 @@ CREATE TABLE "demande_service" (
     "description" TEXT,
     "statut" TEXT NOT NULL,
     "coutEstime" DECIMAL(12,2),
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
     "clientId" UUID NOT NULL,
     "prestataireId" UUID NOT NULL,
     "offreId" UUID NOT NULL,
@@ -113,8 +106,6 @@ CREATE TABLE "facture" (
     "montantTotal" DECIMAL(12,2),
     "pdfUrl" TEXT,
     "statut" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
     "demandeId" UUID NOT NULL,
 
     CONSTRAINT "facture_pkey" PRIMARY KEY ("id")
@@ -127,8 +118,6 @@ CREATE TABLE "paiement" (
     "modePaye" TEXT NOT NULL,
     "datePaiement" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "statut" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
     "factureId" UUID NOT NULL,
 
     CONSTRAINT "paiement_pkey" PRIMARY KEY ("id")
@@ -141,8 +130,6 @@ CREATE TABLE "notification" (
     "message" TEXT NOT NULL,
     "canal" TEXT NOT NULL,
     "dateEnvoi" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
     "userId" UUID NOT NULL,
 
     CONSTRAINT "notification_pkey" PRIMARY KEY ("id")
@@ -155,8 +142,6 @@ CREATE TABLE "produit" (
     "description" TEXT,
     "stock" INTEGER NOT NULL DEFAULT 0,
     "prix" DECIMAL(12,2),
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
     "vendeurId" UUID NOT NULL,
 
     CONSTRAINT "produit_pkey" PRIMARY KEY ("id")
@@ -168,8 +153,6 @@ CREATE TABLE "document_prestataire" (
     "type" TEXT NOT NULL,
     "url" TEXT NOT NULL,
     "dateDepot" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
     "prestataireId" UUID NOT NULL,
 
     CONSTRAINT "document_prestataire_pkey" PRIMARY KEY ("id")
@@ -181,8 +164,6 @@ CREATE TABLE "piece_jointe_demande" (
     "type" TEXT NOT NULL,
     "url" TEXT NOT NULL,
     "dateAjout" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
     "demandeId" UUID NOT NULL,
 
     CONSTRAINT "piece_jointe_demande_pkey" PRIMARY KEY ("id")
@@ -192,21 +173,16 @@ CREATE TABLE "piece_jointe_demande" (
 CREATE TABLE "specialite" (
     "id" UUID NOT NULL,
     "libelle" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "specialite_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "prestataire_specialite" (
-    "id" UUID NOT NULL,
     "prestataireId" UUID NOT NULL,
     "specialiteId" UUID NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "prestataire_specialite_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "prestataire_specialite_pkey" PRIMARY KEY ("prestataireId","specialiteId")
 );
 
 -- CreateIndex
@@ -259,12 +235,6 @@ CREATE UNIQUE INDEX "specialite_libelle_key" ON "specialite"("libelle");
 
 -- CreateIndex
 CREATE INDEX "prestataire_specialite_specialiteId_idx" ON "prestataire_specialite"("specialiteId");
-
--- CreateIndex
-CREATE INDEX "prestataire_specialite_prestataireId_idx" ON "prestataire_specialite"("prestataireId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "prestataire_specialite_prestataireId_specialiteId_key" ON "prestataire_specialite"("prestataireId", "specialiteId");
 
 -- AddForeignKey
 ALTER TABLE "client" ADD CONSTRAINT "client_id_fkey" FOREIGN KEY ("id") REFERENCES "utilisateur"("id") ON DELETE CASCADE ON UPDATE CASCADE;
