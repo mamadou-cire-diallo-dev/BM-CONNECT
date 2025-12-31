@@ -8,6 +8,10 @@ import { prisma } from "./db/prisma.js";
 import { env } from "./config/env.js";
 import apiRoutes from "./routes/index.js";
 import { errorMiddleware } from "./middlewares/error.js";
+import cookieParser from "cookie-parser";
+// Swagger
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './config/swagger.js';
 
 const app = express();
 
@@ -21,6 +25,7 @@ app.use(
 );
 app.use(express.json({ limit: "2mb" }));
 app.use(morgan("dev"));
+app.use(cookieParser());
 
 app.use(
   rateLimit({
@@ -33,6 +38,23 @@ app.use(
 
 // API routes
 app.use("/api", apiRoutes);
+
+
+
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    swaggerOptions: {
+      withCredentials: true, 
+    },
+  })
+);
+
+app.get('/api-docs.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
 
 // 404
 app.use((req, res) =>

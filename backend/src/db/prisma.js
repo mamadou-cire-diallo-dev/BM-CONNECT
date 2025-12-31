@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../generated/prisma/client.js"; 
+=======
+import 'dotenv/config'
+import { PrismaPg } from '@prisma/adapter-pg'
+import { PrismaClient } from '../generated/prisma/index.js'
+import { softDeleteExtension } from './prisma.extensions.js'
+>>>>>>> cire
 
 const connectionString = process.env.DATABASE_URL
 if (!connectionString) {
@@ -11,7 +18,8 @@ const adapter = new PrismaPg({ connectionString })
 
 // Singleton (évite multiples connexions en dev avec nodemon)
 
-export const prisma = new PrismaClient({ adapter })
+const basePrisma = new PrismaClient({ adapter })
+export const prisma = basePrisma.$extends(softDeleteExtension)
 
 // export const prisma = globalThis.__prisma ?? new PrismaClient({ adapter })
 // if (process.env.NODE_ENV !== 'production') globalThis.__prisma = prisma

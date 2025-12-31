@@ -2,7 +2,9 @@ import "dotenv/config";
 import Joi from "joi";
 
 const schema = Joi.object({
-  NODE_ENV: Joi.string().valid("development", "test", "production").default("development"),
+  NODE_ENV: Joi.string()
+    .valid("development", "test", "production")
+    .default("development"),
   PORT: Joi.number().default(3000),
 
   DATABASE_URL: Joi.string().uri().required(),
@@ -11,12 +13,21 @@ const schema = Joi.object({
   // JWT_EXPIRES_IN: Joi.string().default("7d"),
 
   CORS_ORIGIN: Joi.string().default("*"),
+  SMTP_HOST: Joi.string().required(),
+  SMTP_PORT: Joi.number().default(587),
+  SMTP_USER: Joi.string().required(),
+  SMTP_PASS: Joi.string().required(),
+  MAIL_FROM: Joi.string().required(),
+  APP_NAME: Joi.string().default("BM CONNECT"),
 }).unknown(true);
 
 const { value, error } = schema.validate(process.env, { abortEarly: false });
 
 if (error) {
-  console.error(" Invalid environment variables:", error.details.map(d => d.message));
+  console.error(
+    " Invalid environment variables:",
+    error.details.map((d) => d.message)
+  );
   process.exit(1);
 }
 
