@@ -15,7 +15,7 @@ function BesoinAide() {
             <h4 className='font-medium text-[#f26f0e] dark:text-[#f26f0e] uppercase tracking-wide text-lg'>
                 Besoin d'aide immédiate ?
             </h4>
-            <p>
+            <p className='dark:text-gray-300 '>
                 Notre équipe est disponible pour vous assister en temps réel via WhatsApp.
             </p>
             <PrimaryButton className="text-white w-full text-center ">
@@ -23,7 +23,7 @@ function BesoinAide() {
                     Chatter  sur whatsapp
             </PrimaryButton>
         </div>
-        <div className="px-6 py-4  rounded-2xl bg-black/3 dark:bg-white/3 border border-black/6 dark:border-white/6">
+        <div className="px-6 py-4  rounded-2xl bg-black/3 dark:bg-white/3 border border-black/6 dark:border-white/6 dark:text-gray-300 ">
             <h4 className='mb-4'>
                 Heures d'ouvertures
             </h4>
@@ -43,8 +43,8 @@ function BesoinAide() {
             </div>
 
         </div>
-        <div className="px-4 py-2   rounded-2xl px-4 py-2 bg-black/3 dark:bg-white/3 border border-black/6 dark:border-white/6">
-            <h4>
+        <div className="px-4 py-2  dark:text-gray-300  rounded-2xl px-4 py-2 bg-black/3 dark:bg-white/3 border border-black/6 dark:border-white/6">
+            <h4 className='py-4'>
                 Questions Fréquentes
             </h4>
             <ul className="space-y-3">
@@ -64,7 +64,7 @@ function BesoinAide() {
                                     card.classList.add("transition", "duration-300");
                                 }
                             }}
-                            className="group bg-white/6 rounded-xl select-none"
+                            className="group bg-white/6 rounded-xl select-none dark:text-gray-300 "
                         >
                             <summary className="flex items-center justify-between  cursor-pointer">
                                 <h4 className="font-medium text-[#f26f0e]">{question.question}</h4>

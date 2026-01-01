@@ -9,7 +9,7 @@ function ContactezNous() {
     const refs = useRef([]);
   return (
     <section id="valeurs" className="py-20 2xl:py-32 text-black">
-            <div className="max-w-6xl mx-auto px-4">
+            <div className="max-w-6xl mx-auto px-4 pt-10">
 
                 <TitleService
                     title="Contactez-nous"

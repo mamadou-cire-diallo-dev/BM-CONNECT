@@ -280,11 +280,11 @@ export const plansData = [
 export const questionsData = [
     {
         question: '• Comment devenir prestataire ?',
-        answer: 'Vous choisissez le type de service (plomberie, électricité, climatisation), indiquez votre adresse et l’horaire souhaité, puis confirmez la réservation et l’acompte directement dans l’application.'
+        answer: ' Commencez par créer votre compte et lors de la création remplissez tous les champs conformement .'
     },
     {
         question: '• Quels modes de paiement acceptez-vous ?',
-        answer: 'Vous payez uniquement via la plateforme (Mobile Money ou carte). Le montant est sécurisé jusqu’à la fin de l’intervention, puis libéré au prestataire après votre validation.'
+        answer: 'Nous acceptons uniquement via la plateforme (Orange Money ou carte). Le montant est sécurisé jusqu’à la fin de l’intervention, puis libéré au prestataire après votre validation.'
     },
     {
         question: '• Comment annuler une réservation ?',
@@ -293,7 +293,7 @@ export const questionsData = [
     },
     {
         question: '• Où sont disponibles vos services ?',
-        answer: 'Les techniciens sont vérifiés (identité, compétences), puis évalués en continu grâce aux notes et avis des clients après chaque intervention.'
+        answer: ' Nous services sont disponibles dans la navigation Services  '
     }
 ];
 
