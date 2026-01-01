@@ -40,7 +40,7 @@ export default function Hero() {
                 <div className="max-w-6xl mx-auto px-4 min-h-screen max-md:w-screen max-md:overflow-hidden pt-32 md:pt-26 flex items-center justify-center">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                         <div className="text-left">
-                            <motion.p  className="inline-flex items-center gap-3 pl-3 pr-4 py-1.5 rounded-full bg-black/10 dark:bg-white/10 mb-6 justify-start"
+                            <motion.div  className="inline-flex items-center gap-3 pl-3 pr-4 py-1.5 rounded-full bg-black/10 dark:bg-white/10 mb-6 justify-start"
                                 initial={{ y: 60, opacity: 0 }}
                                 whileInView={{ y: 0, opacity: 1 }}
                                 viewport={{ once: true }}
@@ -61,7 +61,7 @@ export default function Hero() {
                                 <span className="text-xs  ml-10 md:ml-0 text-gray-900 dark:text-gray-200/90">
                                     Approuvée par les marques et les fondateurs du monde entier
                                 </span>
-                            </motion.p>
+                            </motion.div>
 
                             <motion.h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6 max-w-xl"
                                 initial={{ y: 60, opacity: 0 }}

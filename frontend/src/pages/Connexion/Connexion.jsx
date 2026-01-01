@@ -101,7 +101,7 @@ export default function Connexion() {
                     <label htmlFor="motpass">Mot de passe </label>                  
                     <input
                         type="password"
-                        name="motDePass"
+                        name="passwordUser"
                         autoComplete="username"
                         inputMode="email"
                         id="motpass"
@@ -119,9 +119,9 @@ export default function Connexion() {
                         focus:shadow-[0_0_0_1px_rgba(242,111,14,0.2)]'
                     />
                     <span className="text-red-500 ">
-                        {errors.motDePass && (
+                        {errors.passwordUser && (
                         <p className="text-red-500 text-sm">
-                            {errors.motDePass.message}
+                            {errors.passwordUser.message}
                         </p>
                         )}
                     </span>

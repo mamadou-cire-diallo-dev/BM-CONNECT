@@ -16,7 +16,12 @@ import ForgotPassword from "./pages/ForgotPassword.jsx";
 import Renitialize from "./pages/Connexion/Renitialize.jsx";
 import NewPassword from "./pages/Connexion/newPassword.jsx";
 
-// clent import
+// Inscription import 
+import InscriptionClients from "./pages/Connexion/InscriptionClients.jsx"; 
+import InscriptionPrestataires from "./pages/Connexion/InscriptionPrestataires.jsx";
+import InscriptionVendeurs from "./pages/Connexion/InscriptionVendeurs.jsx";
+
+// client import
 import DashboardClient from "./pages/Client/Dashboard";
 import LayoutClient from "./pages/Client/Layout";
 import OfferedServices from "./pages/OfferedServices.jsx";
@@ -35,6 +40,9 @@ const App = () => {
         <Route path="/forgotPassword" element={<ForgotPassword />}>  </Route>
         <Route path="/renitialize" element={<Renitialize />}>  </Route>
         <Route path="/newPassword" element={<NewPassword />}>  </Route>
+        <Route path="/inscriptionClient" element={<InscriptionClients />}>  </Route>
+        <Route path="/inscriptionVendeur" element={<InscriptionVendeurs />}>  </Route>
+        <Route path="/inscriptionPrestataire" element={<InscriptionPrestataires />}>  </Route>
 
 
         {/* client Routes */}
