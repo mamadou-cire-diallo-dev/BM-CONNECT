@@ -73,8 +73,8 @@ export default function PrestatairesDispos({prestataire, i}) {
                                         A partir de <span className='text-xl ml-2 text-[#0d2e55] dark:text-white'> {prestataire.prix_diagnostic} GNF  </span> 
                                     </div>
                                     <div className="flex gap-2 my-6  justify-between">
-                                        <PrimaryButtonOrange className={'py-4 rounded-lg bg-none text-green-500 dark:text-white border-2 w-40 dark:border-5 border border-green-500'}>
-                                            <MessageSquare> </MessageSquare>
+                                        <PrimaryButtonOrange className={'py-4 rounded-lg bg-none text-[#0d2e55] dark:text-white border-2 w-40 dark:border-5 border border-[#0d2e55]'}>
+                                            Voir plus
                                         </PrimaryButtonOrange >
                                         <PrimaryButton className={'text-white py-4 w-40 rounded-lg'}>
                                             Réserver

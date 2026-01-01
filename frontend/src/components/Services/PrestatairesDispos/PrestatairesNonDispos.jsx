@@ -71,9 +71,9 @@ function PrestatairesNonDispos({prestataire,i}) {
                                         A partir de <span className='text-[#0d2e55] dark:text-white text-xl ml-2'> {prestataire.prix_diagnostic} GNF  </span> 
                                     </div>
                                     <div className="flex gap-2 my-6  justify-between">
-                                        <PrimaryButtonOrange className={'py-4 rounded-lg bg-none text-gray-500 dark:text-white w-40 border-2 dark:border-5 border border-gray-500 '}>
-                                            <MessageSquare> </MessageSquare>
-                                        </PrimaryButtonOrange >
+                                       <PrimaryButtonOrange className={'py-4 rounded-lg bg-none text-[#0d2e55] dark:text-white border-2 w-40 dark:border-5 border border-[#0d2e55]'}>
+                                                                                   Voir plus
+                                         </PrimaryButtonOrange >
                                         <PrimaryButton className={'text-white py-4 w-40 bg-green-500 rounded-lg'}>
                                             Réserver
                                         </PrimaryButton >
