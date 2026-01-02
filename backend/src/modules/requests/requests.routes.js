@@ -123,6 +123,46 @@ router.patch(
   requestsControllers.updateRequestStatus
 );
 
+/**
+ * @swagger
+ * /requests/{id}/propose-price:
+ *   post:
+ *     summary: Proposer le prix final après diagnostic (Prestataire uniquement)
+ *     tags: [Demandes]
+ *     security:
+ *       - bearerAuth: []
+ *       - csrfToken: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - montantFinal
+ *             properties:
+ *               montantFinal:
+ *                 type: number
+ *                 description: Le montant total de la prestation (hors acompte déjà payé)
+ *     responses:
+ *       201:
+ *         description: Facture de solde générée
+ */
+router.post(
+  "/:id/propose-price",
+  requireAuth,
+  requireRole("PRESTATAIRE"),
+  requireCsrf,
+  requestsControllers.proposePrice
+);
+
 export default router;
 
 /**
@@ -142,6 +182,14 @@ export default router;
  *           format: date-time
  *         description:
  *           type: string
+ *         adresseId:
+ *           type: string
+ *           format: uuid
+ *           description: ID de l'adresse enregistrée (optionnel si adresse/ville fournis)
+ *         adresse:
+ *           type: string
+ *         ville:
+ *           type: string
  *     UpdateStatusInput:
  *       type: object
  *       required:
@@ -149,7 +197,7 @@ export default router;
  *       properties:
  *         statut:
  *           type: string
- *           enum: [PENDING, ACCEPTED, REJECTED, COMPLETED, CANCELLED]
+ *           enum: [PENDING, WAITING_ACOMPTE, ACCEPTED, WAITING_SOLDE, COMPLETED, REJECTED, CANCELLED]
  *         notes:
  *           type: string
  */

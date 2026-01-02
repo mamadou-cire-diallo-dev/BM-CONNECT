@@ -57,6 +57,8 @@ model Utilisateur {
   dateCreation DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  photoProfil  String?
+
   client         Client?
   prestataire    Prestataire?
   vendeur        Vendeur?
@@ -80,6 +82,7 @@ model Client {
 
   utilisateur Utilisateur      @relation(fields: [id], references: [id], onDelete: Cascade)
   demandes    DemandeService[]
+  addresses   Adresse[]
 
   deletedAt DateTime?
 
@@ -160,7 +163,9 @@ model ServiceOffre {
   titre       String
   description String?
   tempsEstime Int?
-  prix        Decimal? @db.Decimal(12, 2)
+  prix           Decimal? @db.Decimal(12, 2)
+  prixDiagnostic Decimal? @db.Decimal(12, 2) @default(0)
+  fraisTransport Decimal? @db.Decimal(12, 2) @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -184,6 +189,8 @@ model DemandeService {
   id            String    @id @default(uuid()) @db.Uuid
   dateSouhaitee DateTime?
   description   String?
+  adresse       String?
+  ville         String?
   statut        String
   coutEstime    Decimal?  @db.Decimal(12, 2)
 
@@ -198,8 +205,11 @@ model DemandeService {
   prestataire Prestataire  @relation(fields: [prestataireId], references: [id], onDelete: Restrict)
   offre       ServiceOffre @relation(fields: [offreId], references: [id], onDelete: Restrict)
 
-  facture       Facture?
+  factures      Facture[]
   piecesJointes PieceJointeDemande[]
+
+  adresseId     String?   @db.Uuid
+  adresseLiee   Adresse?  @relation(fields: [adresseId], references: [id], onDelete: SetNull)
 
   @@index([clientId])
   @@index([prestataireId])
@@ -217,11 +227,13 @@ model Facture {
   montantTotal Decimal? @db.Decimal(12, 2)
   pdfUrl       String?
   statut       String
+  type         String   @default("TOTAL") // ACOMPTE, SOLDE, TOTAL
+  description  String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  demandeId String         @unique @db.Uuid
+  demandeId String         @db.Uuid
   demande   DemandeService @relation(fields: [demandeId], references: [id], onDelete: Cascade)
 
   paiements Paiement[]
@@ -231,6 +243,26 @@ model Facture {
   deletedAt DateTime?
 
   @@map("facture")
+}
+
+model Adresse {
+  id           String   @id @default(uuid()) @db.Uuid
+  titre        String   // Ex: Maison, Bureau
+  adresse      String   // Rue, quartier
+  ville        String
+  indications  String?  // Ex: "Derrière la station"
+  estPrincipal Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  clientId String @db.Uuid
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  demandes DemandeService[]
+
+  @@index([clientId])
+  @@map("adresse")
 }
 
 model Paiement {

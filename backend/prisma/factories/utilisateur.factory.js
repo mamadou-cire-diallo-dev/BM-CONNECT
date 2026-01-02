@@ -12,6 +12,7 @@ export async function buildUtilisateur(role, overrides = {}) {
     status: "ACTIVE",
     emailVerifiedAt: new Date(),
     phoneVerifiedAt: new Date(),
+    photoProfil: `https://i.pravatar.cc/150?u=${faker.string.uuid()}`,
     ...overrides,
   };
 

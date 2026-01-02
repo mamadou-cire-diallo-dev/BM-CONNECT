@@ -9,6 +9,7 @@ async function resetDb() {
     prisma.serviceOffre.deleteMany({ hardDelete: true }),
     prisma.categorieService.deleteMany({ hardDelete: true }),
     prisma.session.deleteMany({ hardDelete: true }),
+    prisma.adresse.deleteMany(), 
     prisma.trustedDevice.deleteMany({ hardDelete: true }),
     prisma.verificationCode.deleteMany({ hardDelete: true }),
     prisma.client.deleteMany({ hardDelete: true }),
@@ -50,7 +51,16 @@ async function main() {
   });
 
   // Test entities
-  await createUserWithActor("CLIENT", { email: "client@test.com", nomComplet: "Jean Client" });
+  const c1 = await createUserWithActor("CLIENT", { email: "client@test.com", nomComplet: "Jean Client" });
+  
+  // Create test addresses for c1
+  await prisma.adresse.createMany({
+    data: [
+      { clientId: c1.id, titre: "Maison", adresse: "Cité de l'Air", ville: "Conakry", estPrincipal: true },
+      { clientId: c1.id, titre: "Bureau", adresse: "Kaloum, Avenue de la République", ville: "Conakry" }
+    ]
+  });
+
   const p1 = await createUserWithActor("PRESTATAIRE", { email: "prestataire@test.com", nomComplet: "Pierre Prestataire" });
   await createUserWithActor("VENDEUR", { email: "vendeur@test.com", nomComplet: "Valérie Vendeuse" });
 

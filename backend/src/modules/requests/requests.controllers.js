@@ -53,3 +53,17 @@ export async function updateRequestStatus(req, res, next) {
     next(error);
   }
 }
+
+export async function proposePrice(req, res, next) {
+  try {
+    const proposal = await requestsService.proposeFinalPrice(
+      req.params.id,
+      req.user.sub,
+      req.body.montantFinal
+    );
+    res.status(201).json(proposal);
+  } catch (error) {
+    if (error.status) return res.status(error.status).json({ message: error.message });
+    next(error);
+  }
+}

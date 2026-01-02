@@ -20,6 +20,9 @@ app.use(express.json({ limit: "2mb" }));
 app.use(morgan("dev"));
 app.use(cookieParser());
 
+// Fichiers statiques (Uploads)
+app.use("/uploads", express.static("public/uploads"));
+
 app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000,

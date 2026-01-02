@@ -54,13 +54,20 @@ export const paymentsService = {
         data: { statut: "PAYEE" }
       });
 
-      // 3. Mettre à jour le statut de la demande vers "CONFIRMED"
-      await tx.demandeService.update({
-        where: { id: paiement.facture.demandeId },
-        data: { statut: "ACCEPTED" } // On garde ACCEPTED ou on ajoute CONFIRMED ? 
-        // Note: Le CDC parle de CONFIRMER après paiement. 
-        // Adaptons le schéma de statut dans requests.services si besoin.
-      });
+      // 3. Mettre à jour le statut de la demande selon le type de facture
+      let nextRequestStatus = null;
+      if (paiement.facture.type === "ACOMPTE") {
+        nextRequestStatus = "ACCEPTED"; 
+      } else if (paiement.facture.type === "SOLDE" || paiement.facture.type === "TOTAL") {
+        nextRequestStatus = "COMPLETED";
+      }
+
+      if (nextRequestStatus) {
+        await tx.demandeService.update({
+          where: { id: paiement.facture.demandeId },
+          data: { statut: nextRequestStatus }
+        });
+      }
 
       return updatedPaiement;
     });

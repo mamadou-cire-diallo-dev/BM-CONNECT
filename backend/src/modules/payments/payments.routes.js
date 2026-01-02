@@ -14,9 +14,9 @@ const router = Router();
 
 /**
  * @swagger
- * /payments/invoice/{demandeId}:
+ * /payments/invoices/{demandeId}:
  *   get:
- *     summary: Obtenir la facture d'une demande de service
+ *     summary: Obtenir la liste des factures d'une demande de service
  *     tags: [Paiements]
  *     security:
  *       - bearerAuth: []
@@ -30,9 +30,9 @@ const router = Router();
  *           format: uuid
  *     responses:
  *       200:
- *         description: Détails de la facture
+ *         description: Liste des factures (Acompte, Solde, etc.)
  */
-router.get("/invoice/:demandeId", requireAuth, paymentsControllers.getInvoice);
+router.get("/invoices/:demandeId", requireAuth, paymentsControllers.getInvoices);
 
 /**
  * @swagger

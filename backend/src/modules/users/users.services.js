@@ -10,3 +10,11 @@ export async function updateMe(userId, data) {
     select: { id: true, nomComplet: true, telephone: true, email: true, role: true },
   });
 }
+
+export async function updateProfilePhoto(userId, photoUrl) {
+  return prisma.utilisateur.update({
+    where: { id: userId },
+    data: { photoProfil: photoUrl },
+    select: { id: true, photoProfil: true },
+  });
+}

@@ -22,11 +22,10 @@ export async function simulateWebhook(req, res, next) {
   }
 }
 
-export async function getInvoice(req, res, next) {
+export async function getInvoices(req, res, next) {
   try {
-    const invoice = await invoicesService.getInvoiceByDemand(req.params.demandeId);
-    if (!invoice) return res.status(404).json({ message: "Facture introuvable" });
-    res.json(invoice);
+    const invoices = await invoicesService.getInvoicesByDemand(req.params.demandeId);
+    res.json(invoices);
   } catch (error) {
     next(error);
   }

@@ -6,6 +6,7 @@ import offersRoutes from "../modules/offers/offers.routes.js";
 import adminRoutes from "../modules/admin/admin.routes.js";
 import requestsRoutes from "../modules/requests/requests.routes.js";
 import paymentRoutes from "../modules/payments/payments.routes.js";
+import addressesRoutes from "../modules/addresses/addresses.routes.js";
 
 const router = Router();
 
@@ -18,5 +19,6 @@ router.use("/offers", offersRoutes);
 router.use("/admin", adminRoutes);
 router.use("/requests", requestsRoutes);
 router.use("/payments", paymentRoutes);
+router.use("/addresses", addressesRoutes);
 
 export default router;

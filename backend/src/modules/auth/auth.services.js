@@ -331,19 +331,21 @@ export async function login(req, { identifier, motDePasse }) {
 
   if (require2fa) {
     const code = generateOtp6();
-    const channel = "EMAIL";
+    const channel = "PHONE"; // Changé de EMAIL à PHONE
 
     const challenge = await prisma.$transaction(async (tx) => {
       return createLogin2faChallenge(tx, user.id, channel, code);
     });
 
-    await sendOtpEmail({ to: user.email, code });
+    // On commente l'envoi de mail selon la demande
+    // await sendOtpEmail({ to: user.email, code });
+    console.log("OTP 2FA (SMS) =", code, "for", user.telephone);
 
     return {
       twoFactorRequired: true,
       challengeId: challenge.id,
       channel,
-      message: "Code 2FA envoyé",
+      message: "Code 2FA envoyé par SMS (simulé)",
     };
   }
 
